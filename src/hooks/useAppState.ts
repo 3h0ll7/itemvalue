@@ -1,5 +1,7 @@
 import { useState, useCallback } from "react";
+import { toast } from "sonner";
 import type { GovernorateId } from "@/lib/governorates";
+import { analyzeItem } from "@/lib/api/analyzeItem";
 
 export type AppScreen = "onboarding" | "upload" | "analyzing" | "results";
 
@@ -37,31 +39,32 @@ export function useAppState() {
     reader.readAsDataURL(file);
   }, []);
 
-  const startAnalysis = useCallback(() => {
+  const startAnalysis = useCallback(async () => {
+    if (!imagePreview || !governorate) {
+      toast.error("الرجاء اختيار صورة أولاً");
+      return;
+    }
+
     setScreen("analyzing");
     
-    // Simulate AI analysis with mock data
-    setTimeout(() => {
-      const mockResult: AnalysisResult = {
-        itemType: "Electronics",
-        itemName: "iPhone 13 Pro Max",
-        condition: "Good",
-        conditionScore: 78,
-        averagePrice: 850000,
-        lowestPrice: 720000,
-        highestPrice: 980000,
-        suggestedPrice: 830000,
-        recommendation: "Market conditions are favorable. Consider listing at the suggested price for a quick sale within 3-5 days.",
-        listingLinks: [
-          { title: "iPhone 13 Pro Max 256GB", price: 850000, url: "#" },
-          { title: "iPhone 13 Pro Max Gold", price: 880000, url: "#" },
-          { title: "iPhone 13 Pro Max 128GB", price: 780000, url: "#" },
-        ],
-      };
-      setAnalysisResult(mockResult);
-      setScreen("results");
-    }, 3000);
-  }, []);
+    try {
+      const result = await analyzeItem(imagePreview, governorate);
+      
+      if (result.success === true) {
+        setAnalysisResult(result.data);
+        setScreen("results");
+      } else {
+        const errorData = result.error;
+        const errorMessage = errorData.message || errorData.error;
+        toast.error(errorMessage);
+        setScreen("upload");
+      }
+    } catch (error) {
+      console.error("Analysis error:", error);
+      toast.error("حدث خطأ أثناء التحليل. الرجاء المحاولة مرة أخرى.");
+      setScreen("upload");
+    }
+  }, [imagePreview, governorate]);
 
   const reset = useCallback(() => {
     setScreen("upload");
