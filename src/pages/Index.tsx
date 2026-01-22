@@ -1,14 +1,55 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useAppState } from "@/hooks/useAppState";
+import { OnboardingScreen } from "@/components/OnboardingScreen";
+import { UploadScreen } from "@/components/UploadScreen";
+import { AnalyzingScreen } from "@/components/AnalyzingScreen";
+import { ResultsScreen } from "@/components/ResultsScreen";
 
 const Index = () => {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
+  const {
+    screen,
+    governorate,
+    imagePreview,
+    analysisResult,
+    selectGovernorate,
+    uploadImage,
+    startAnalysis,
+    reset,
+    goBack,
+  } = useAppState();
+
+  if (screen === "onboarding") {
+    return <OnboardingScreen onSelectGovernorate={selectGovernorate} />;
+  }
+
+  if (screen === "upload" && governorate) {
+    return (
+      <UploadScreen
+        governorate={governorate}
+        imagePreview={imagePreview}
+        onUploadImage={uploadImage}
+        onStartAnalysis={startAnalysis}
+        onBack={goBack}
+      />
+    );
+  }
+
+  if (screen === "analyzing") {
+    return <AnalyzingScreen />;
+  }
+
+  if (screen === "results" && analysisResult && governorate) {
+    return (
+      <ResultsScreen
+        result={analysisResult}
+        governorate={governorate}
+        imagePreview={imagePreview}
+        onReset={reset}
+        onBack={goBack}
+      />
+    );
+  }
+
+  return null;
 };
 
 export default Index;
