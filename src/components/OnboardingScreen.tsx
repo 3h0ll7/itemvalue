@@ -27,12 +27,13 @@ export function OnboardingScreen({ onSelectGovernorate }: OnboardingScreenProps)
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
         className="grid-border-b py-12 px-6 text-center"
+        dir="rtl"
       >
-        <h2 className="text-4xl md:text-5xl lg:text-6xl mb-4">
-          KNOW YOUR<br />ITEM'S WORTH
+        <h2 className="text-4xl md:text-5xl lg:text-6xl mb-4 font-bold">
+          شكد تسوه؟
         </h2>
-        <p className="text-muted-foreground max-w-md mx-auto font-mono text-sm">
-          Upload a photo. Get instant AI-powered price estimates for the Iraqi market.
+        <p className="text-muted-foreground max-w-md mx-auto text-base leading-relaxed">
+          الأسماء الزينة ما تشرح نفسها، تخلي المستخدم يجرّب. وهذا واحد منها.
         </p>
       </motion.div>
 
