@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, ExternalLink, RefreshCw } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { AnalysisResult } from "@/hooks/useAppState";
 import { GOVERNORATES, type GovernorateId } from "@/lib/governorates";
+import { SettingsMenu } from "@/components/SettingsMenu";
+import { useApp } from "@/contexts/AppContext";
 
 interface ResultsScreenProps {
   result: AnalysisResult;
@@ -27,6 +29,8 @@ export function ResultsScreen({
   onBack,
 }: ResultsScreenProps) {
   const govData = GOVERNORATES.find((g) => g.id === governorate);
+  const { t, isRTL, language } = useApp();
+  const BackIcon = isRTL ? ArrowRight : ArrowLeft;
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -40,22 +44,17 @@ export function ResultsScreen({
           onClick={onBack}
           className="w-10 h-10 flex items-center justify-center hover:bg-muted transition-colors"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <BackIcon className="w-5 h-5" />
         </button>
         
         <div className="text-center">
-          <h1 className="text-lg">PRICE ANALYSIS</h1>
+          <h1 className="text-lg">{t('resultsTitle')}</h1>
           <p className="text-xs font-mono text-muted-foreground">
-            {govData?.name}
+            {language === 'ar' ? govData?.nameAr : govData?.name}
           </p>
         </div>
         
-        <button 
-          onClick={onReset}
-          className="w-10 h-10 flex items-center justify-center hover:bg-muted transition-colors"
-        >
-          <RefreshCw className="w-4 h-4" />
-        </button>
+        <SettingsMenu />
       </motion.header>
 
       {/* Content */}
@@ -69,7 +68,7 @@ export function ResultsScreen({
         >
           {/* Image */}
           {imagePreview && (
-            <div className="aspect-square md:aspect-auto grid-border-b md:grid-border-r bg-muted/30">
+            <div className="aspect-square md:aspect-auto grid-border-b md:grid-border-e bg-muted/30">
               <img
                 src={imagePreview}
                 alt="Item"
@@ -85,11 +84,11 @@ export function ResultsScreen({
                 {result.itemType}
               </p>
               <h2 className="text-2xl md:text-3xl mb-3">
-                {result.itemName.toUpperCase()}
+                {result.itemName}
               </h2>
               <div className="inline-flex items-center gap-2 px-3 py-1 grid-border">
-                <span className="text-xs font-mono uppercase">
-                  {result.condition}
+                <span className="text-xs font-mono">
+                  {t('condition')}: {result.condition}
                 </span>
                 <span className="text-xs font-mono text-muted-foreground">
                   {result.conditionScore}%
@@ -100,7 +99,7 @@ export function ResultsScreen({
             {/* Suggested Price */}
             <div className="grid-border-b p-6 bg-foreground text-background">
               <p className="text-xs font-mono uppercase tracking-widest mb-2 opacity-70">
-                Suggested Price
+                {t('suggestedPrice')}
               </p>
               <p className="text-4xl md:text-5xl font-mono">
                 {formatPrice(result.suggestedPrice)}
@@ -119,17 +118,17 @@ export function ResultsScreen({
           transition={{ delay: 0.2 }}
           className="grid grid-cols-3 grid-border-b"
         >
-          <div className="p-6 grid-border-r">
+          <div className="p-6 grid-border-e">
             <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-2">
-              Lowest
+              {t('lowest')}
             </p>
             <p className="text-xl md:text-2xl font-mono">
               {formatPrice(result.lowestPrice)}
             </p>
           </div>
-          <div className="p-6 grid-border-r">
+          <div className="p-6 grid-border-e">
             <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-2">
-              Average
+              {t('average')}
             </p>
             <p className="text-xl md:text-2xl font-mono">
               {formatPrice(result.averagePrice)}
@@ -137,7 +136,7 @@ export function ResultsScreen({
           </div>
           <div className="p-6">
             <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-2">
-              Highest
+              {t('highest')}
             </p>
             <p className="text-xl md:text-2xl font-mono">
               {formatPrice(result.highestPrice)}
@@ -153,7 +152,7 @@ export function ResultsScreen({
           className="grid-border-b p-6"
         >
           <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-3">
-            Selling Strategy
+            {t('sellingStrategy')}
           </p>
           <p className="text-sm leading-relaxed">
             {result.recommendation}
@@ -168,7 +167,7 @@ export function ResultsScreen({
         >
           <div className="grid-border-b py-4 px-6">
             <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
-              Similar Listings
+              {t('similarListings')}
             </p>
           </div>
           
@@ -185,7 +184,7 @@ export function ResultsScreen({
                     {formatPrice(listing.price)} IQD
                   </p>
                 </div>
-                <ExternalLink className="w-4 h-4 text-muted-foreground shrink-0 ml-4" />
+                <ExternalLink className="w-4 h-4 text-muted-foreground shrink-0 ms-4" />
               </a>
             ))}
           </div>
@@ -200,8 +199,8 @@ export function ResultsScreen({
         className="grid-border-t p-6"
       >
         <Button onClick={onReset} className="w-full h-14 text-base">
-          <RefreshCw className="w-4 h-4 mr-2" />
-          PRICE ANOTHER ITEM
+          <RefreshCw className="w-4 h-4 me-2" />
+          {t('priceAnother')}
         </Button>
       </motion.div>
     </div>

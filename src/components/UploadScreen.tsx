@@ -1,8 +1,10 @@
 import { useRef, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Camera, Upload, ArrowLeft, X } from "lucide-react";
+import { Camera, Upload, ArrowLeft, ArrowRight, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GOVERNORATES, type GovernorateId } from "@/lib/governorates";
+import { SettingsMenu } from "@/components/SettingsMenu";
+import { useApp } from "@/contexts/AppContext";
 
 interface UploadScreenProps {
   governorate: GovernorateId;
@@ -21,8 +23,10 @@ export function UploadScreen({
 }: UploadScreenProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+  const { t, isRTL, language } = useApp();
 
   const govData = GOVERNORATES.find((g) => g.id === governorate);
+  const BackIcon = isRTL ? ArrowRight : ArrowLeft;
 
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,17 +50,17 @@ export function UploadScreen({
           onClick={onBack}
           className="w-10 h-10 flex items-center justify-center hover:bg-muted transition-colors"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <BackIcon className="w-5 h-5" />
         </button>
         
         <div className="text-center">
-          <h1 className="text-lg">UPLOAD ITEM</h1>
+          <h1 className="text-lg">{t('uploadTitle')}</h1>
           <p className="text-xs font-mono text-muted-foreground">
-            {govData?.name}
+            {language === 'ar' ? govData?.nameAr : govData?.name}
           </p>
         </div>
         
-        <div className="w-10" />
+        <SettingsMenu />
       </motion.header>
 
       {/* Main Content */}
@@ -76,7 +80,7 @@ export function UploadScreen({
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="absolute top-4 right-4 w-10 h-10 bg-background grid-border flex items-center justify-center hover:bg-muted transition-colors"
+                className="absolute top-4 end-4 w-10 h-10 bg-background grid-border flex items-center justify-center hover:bg-muted transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -92,7 +96,7 @@ export function UploadScreen({
                 onClick={onStartAnalysis}
                 className="w-full h-14 text-base"
               >
-                GET PRICE ESTIMATE
+                {t('analyzeButton')}
               </Button>
             </motion.div>
           </>
@@ -110,10 +114,10 @@ export function UploadScreen({
               </div>
               
               <h2 className="text-2xl md:text-3xl mb-2 text-center">
-                ADD YOUR ITEM
+                {t('uploadTitle')}
               </h2>
               <p className="text-muted-foreground font-mono text-sm text-center max-w-xs mb-8">
-                Take a clear photo for accurate pricing
+                {t('uploadHint')}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 w-full max-w-sm">
@@ -121,16 +125,16 @@ export function UploadScreen({
                   onClick={() => cameraInputRef.current?.click()}
                   className="flex-1 h-12"
                 >
-                  <Camera className="w-4 h-4 mr-2" />
-                  TAKE PHOTO
+                  <Camera className="w-4 h-4 me-2" />
+                  {t('takePhoto')}
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => fileInputRef.current?.click()}
                   className="flex-1 h-12"
                 >
-                  <Upload className="w-4 h-4 mr-2" />
-                  UPLOAD
+                  <Upload className="w-4 h-4 me-2" />
+                  {t('uploadFile')}
                 </Button>
               </div>
             </motion.div>
@@ -144,7 +148,10 @@ export function UploadScreen({
             >
               <div className="grid-border p-4">
                 <p className="text-xs font-mono text-muted-foreground text-center">
-                  TIP: Good lighting and clear angles help get better prices
+                  {language === 'ar' 
+                    ? 'نصيحة: الإضاءة الجيدة والزوايا الواضحة تساعد على الحصول على أسعار أفضل'
+                    : 'TIP: Good lighting and clear angles help get better prices'
+                  }
                 </p>
               </div>
             </motion.div>
