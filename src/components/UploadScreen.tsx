@@ -1,6 +1,6 @@
 import { useRef, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Camera, Upload, ArrowLeft, Image as ImageIcon, Sparkles } from "lucide-react";
+import { Camera, Upload, ArrowLeft, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GOVERNORATES, type GovernorateId } from "@/lib/governorates";
 
@@ -35,114 +35,121 @@ export function UploadScreen({
   );
 
   return (
-    <div className="min-h-screen gradient-hero flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="px-4 py-4 flex items-center gap-4"
+      <motion.header
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="grid-border-b py-4 px-6 flex items-center justify-between"
       >
-        <Button variant="ghost" size="icon" onClick={onBack} className="shrink-0">
+        <button 
+          onClick={onBack}
+          className="w-10 h-10 flex items-center justify-center hover:bg-muted transition-colors"
+        >
           <ArrowLeft className="w-5 h-5" />
-        </Button>
-        <div className="flex-1">
-          <h1 className="font-semibold text-foreground">Price Your Item</h1>
-          <p className="text-sm text-muted-foreground">
-            📍 {govData?.name}
+        </button>
+        
+        <div className="text-center">
+          <h1 className="text-lg">UPLOAD ITEM</h1>
+          <p className="text-xs font-mono text-muted-foreground">
+            {govData?.name}
           </p>
         </div>
-      </motion.div>
+        
+        <div className="w-10" />
+      </motion.header>
 
       {/* Main Content */}
-      <div className="flex-1 px-6 pb-8 flex flex-col">
-        {/* Upload Area */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1 }}
-          className="flex-1 bg-card rounded-3xl shadow-card overflow-hidden flex flex-col"
-        >
-          {imagePreview ? (
-            <div className="relative flex-1 flex flex-col">
-              <div className="flex-1 p-4">
-                <img
-                  src={imagePreview}
-                  alt="Item preview"
-                  className="w-full h-full object-contain rounded-2xl"
-                />
-              </div>
-              <div className="p-4 pt-0 flex gap-3">
-                <Button
-                  variant="outline"
-                  className="flex-1"
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  <ImageIcon className="w-4 h-4" />
-                  Change
-                </Button>
-                <Button
-                  variant="hero"
-                  className="flex-[2]"
-                  onClick={onStartAnalysis}
-                >
-                  <Sparkles className="w-4 h-4" />
-                  Get Price
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mb-6"
+      <div className="flex-1 flex flex-col">
+        {imagePreview ? (
+          <>
+            {/* Image Preview */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex-1 grid-border-b relative"
+            >
+              <img
+                src={imagePreview}
+                alt="Item preview"
+                className="w-full h-full object-contain bg-muted/30"
+              />
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="absolute top-4 right-4 w-10 h-10 bg-background grid-border flex items-center justify-center hover:bg-muted transition-colors"
               >
-                <Camera className="w-12 h-12 text-primary" />
-              </motion.div>
+                <X className="w-4 h-4" />
+              </button>
+            </motion.div>
+
+            {/* Action Bar */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-6"
+            >
+              <Button
+                onClick={onStartAnalysis}
+                className="w-full h-14 text-base"
+              >
+                GET PRICE ESTIMATE
+              </Button>
+            </motion.div>
+          </>
+        ) : (
+          <>
+            {/* Upload Area */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.1 }}
+              className="flex-1 grid-border-b flex flex-col items-center justify-center p-8"
+            >
+              <div className="w-20 h-20 grid-border flex items-center justify-center mb-8">
+                <Camera className="w-8 h-8" />
+              </div>
               
-              <h2 className="text-xl font-semibold text-foreground mb-2">
-                Add Your Item Photo
+              <h2 className="text-2xl md:text-3xl mb-2 text-center">
+                ADD YOUR ITEM
               </h2>
-              <p className="text-muted-foreground mb-8 max-w-[280px]">
-                Take a clear photo of your item for the most accurate price estimate
+              <p className="text-muted-foreground font-mono text-sm text-center max-w-xs mb-8">
+                Take a clear photo for accurate pricing
               </p>
 
-              <div className="flex flex-col gap-3 w-full max-w-xs">
+              <div className="flex flex-col sm:flex-row gap-3 w-full max-w-sm">
                 <Button
-                  variant="hero"
-                  size="lg"
                   onClick={() => cameraInputRef.current?.click()}
-                  className="w-full"
+                  className="flex-1 h-12"
                 >
-                  <Camera className="w-5 h-5" />
-                  Take Photo
+                  <Camera className="w-4 h-4 mr-2" />
+                  TAKE PHOTO
                 </Button>
                 <Button
                   variant="outline"
-                  size="lg"
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-full"
+                  className="flex-1 h-12"
                 >
-                  <Upload className="w-5 h-5" />
-                  Upload from Gallery
+                  <Upload className="w-4 h-4 mr-2" />
+                  UPLOAD
                 </Button>
               </div>
-            </div>
-          )}
-        </motion.div>
+            </motion.div>
 
-        {/* Tips */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="mt-4 px-4 py-3 bg-secondary/20 rounded-2xl"
-        >
-          <p className="text-sm text-muted-foreground text-center">
-            💡 <span className="font-medium">Tip:</span> Good lighting and clear angles help get better prices
-          </p>
-        </motion.div>
+            {/* Tips */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="p-6"
+            >
+              <div className="grid-border p-4">
+                <p className="text-xs font-mono text-muted-foreground text-center">
+                  TIP: Good lighting and clear angles help get better prices
+                </p>
+              </div>
+            </motion.div>
+          </>
+        )}
       </div>
 
       {/* Hidden file inputs */}
