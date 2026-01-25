@@ -15,27 +15,56 @@ export async function analyzeItem(
   const govData = GOVERNORATES.find((g) => g.id === governorateId);
   const governorateName = govData?.name || governorateId;
 
-  const { data, error } = await supabase.functions.invoke('analyze-item', {
-    body: { 
-      imageBase64,
-      governorate: governorateName
-    },
-  });
+  try {
+    const { data, error } = await supabase.functions.invoke('analyze-item', {
+      body: { 
+        imageBase64,
+        governorate: governorateName
+      },
+    });
 
-  if (error) {
-    console.error('Error calling analyze-item function:', error);
+    if (error) {
+      console.error('Error calling analyze-item function:', error);
+      
+      // Try to extract the actual error message from the response
+      // FunctionsHttpError contains context with the response body
+      const errorContext = (error as any).context;
+      if (errorContext) {
+        try {
+          const responseBody = await errorContext.json();
+          if (responseBody?.message || responseBody?.error) {
+            return { 
+              success: false, 
+              error: { 
+                error: responseBody.error || 'error',
+                message: responseBody.message || responseBody.error
+              } 
+            };
+          }
+        } catch {
+          // Failed to parse response body, use default error
+        }
+      }
+      
+      return { 
+        success: false, 
+        error: { error: error.message || 'Failed to analyze item' } 
+      };
+    }
+
+    if (data?.error) {
+      return { 
+        success: false, 
+        error: data as AnalyzeItemError 
+      };
+    }
+
+    return { success: true, data: data as AnalysisResult };
+  } catch (err) {
+    console.error('Unexpected error in analyzeItem:', err);
     return { 
       success: false, 
-      error: { error: error.message || 'Failed to analyze item' } 
+      error: { error: 'Unexpected error occurred' } 
     };
   }
-
-  if (data?.error) {
-    return { 
-      success: false, 
-      error: data as AnalyzeItemError 
-    };
-  }
-
-  return { success: true, data: data as AnalysisResult };
 }
