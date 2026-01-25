@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 
 export function AnalyzingScreen() {
   const steps = [
-    { label: 'التعرف على الشي', delay: 0 },
-    { label: 'البحث بالسوق', delay: 0.8 },
+    { label: 'التعرف على العنصر', delay: 0 },
+    { label: 'البحث في السوق', delay: 0.8 },
     { label: 'حساب السعر', delay: 1.6 },
   ];
 
@@ -11,7 +11,7 @@ export function AnalyzingScreen() {
     <div className="min-h-screen bg-background flex flex-col" dir="rtl">
       {/* Header */}
       <header className="grid-border-b py-6 px-6">
-        <h1 className="text-2xl text-center">جاري التحليل</h1>
+        <h1 className="text-xl text-center font-semibold">جاري التحليل</h1>
       </header>
 
       {/* Main Content */}
@@ -20,7 +20,7 @@ export function AnalyzingScreen() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="relative w-24 h-24 mb-12"
+          className="relative w-20 h-20 mb-12"
         >
           <motion.div
             animate={{ rotate: 360 }}
@@ -31,17 +31,17 @@ export function AnalyzingScreen() {
           <motion.div
             animate={{ rotate: -360 }}
             transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-3 grid-border"
+            className="absolute inset-2 grid-border"
           />
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-6 bg-foreground"
+            className="absolute inset-4 bg-foreground"
           />
         </motion.div>
 
         {/* Steps */}
-        <div className="w-full max-w-xs space-y-4">
+        <div className="w-full max-w-xs space-y-3">
           {steps.map((step, index) => (
             <motion.div
               key={index}
@@ -50,7 +50,7 @@ export function AnalyzingScreen() {
               transition={{ delay: step.delay }}
               className="grid-border p-4 flex items-center justify-between"
             >
-              <span className="font-mono text-sm">{step.label}</span>
+              <span className="text-sm">{step.label}</span>
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: [0.3, 1, 0.3] }}
@@ -65,7 +65,7 @@ export function AnalyzingScreen() {
       {/* Footer */}
       <footer className="grid-border-t py-4 px-6">
         <p className="text-xs font-mono text-muted-foreground text-center">
-          هذا عادةً ياخذ ثواني
+          هذا عادةً يستغرق بضع ثوانٍ
         </p>
       </footer>
     </div>
