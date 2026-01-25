@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import type { GovernorateId } from "@/lib/governorates";
 import { analyzeItem } from "@/lib/api/analyzeItem";
 
-export type AppScreen = "onboarding" | "upload" | "analyzing" | "results";
+export type AppScreen = "idle" | "analyzing" | "results";
 
 export interface AnalysisResult {
   itemType: string;
@@ -19,15 +19,15 @@ export interface AnalysisResult {
 }
 
 export function useAppState() {
-  const [screen, setScreen] = useState<AppScreen>("onboarding");
+  const [screen, setScreen] = useState<AppScreen>("idle");
   const [governorate, setGovernorate] = useState<GovernorateId | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
+  const [analysisHistory, setAnalysisHistory] = useState<AnalysisResult[]>([]);
 
   const selectGovernorate = useCallback((gov: GovernorateId) => {
     setGovernorate(gov);
-    setScreen("upload");
   }, []);
 
   const uploadImage = useCallback((file: File) => {
@@ -41,7 +41,7 @@ export function useAppState() {
 
   const startAnalysis = useCallback(async () => {
     if (!imagePreview || !governorate) {
-      toast.error("الرجاء اختيار صورة أولاً");
+      toast.error("الرجاء اختيار صورة ومحافظة أولاً");
       return;
     }
 
@@ -52,35 +52,37 @@ export function useAppState() {
       
       if (result.success === true) {
         setAnalysisResult(result.data);
+        setAnalysisHistory(prev => [result.data, ...prev]);
         setScreen("results");
       } else {
         const errorData = result.error;
         const errorMessage = errorData.message || errorData.error;
         toast.error(errorMessage);
-        setScreen("upload");
+        setScreen("idle");
       }
     } catch (error) {
       console.error("Analysis error:", error);
       toast.error("حدث خطأ أثناء التحليل. الرجاء المحاولة مرة أخرى.");
-      setScreen("upload");
+      setScreen("idle");
     }
   }, [imagePreview, governorate]);
 
   const reset = useCallback(() => {
-    setScreen("upload");
+    setScreen("idle");
     setImageFile(null);
     setImagePreview(null);
     setAnalysisResult(null);
+    setGovernorate(null);
   }, []);
 
   const goBack = useCallback(() => {
-    if (screen === "upload") {
-      setScreen("onboarding");
-      setGovernorate(null);
-    } else if (screen === "results") {
-      reset();
+    if (screen === "results") {
+      setScreen("idle");
+      setImageFile(null);
+      setImagePreview(null);
+      setAnalysisResult(null);
     }
-  }, [screen, reset]);
+  }, [screen]);
 
   return {
     screen,
@@ -88,6 +90,7 @@ export function useAppState() {
     imageFile,
     imagePreview,
     analysisResult,
+    analysisHistory,
     selectGovernorate,
     uploadImage,
     startAnalysis,
