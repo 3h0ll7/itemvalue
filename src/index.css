@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* Stacked Store Inspired - Minimalist Gallery Aesthetic */
 
@@ -114,36 +114,17 @@
     font-family: 'Space Grotesk', sans-serif;
   }
 
-  html[lang="ar"] body {
-    font-family: 'Noto Kufi Arabic', sans-serif;
-  }
-
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: -0.02em;
   }
-
-  html[lang="ar"] h1,
-  html[lang="ar"] h2,
-  html[lang="ar"] h3,
-  html[lang="ar"] h4,
-  html[lang="ar"] h5,
-  html[lang="ar"] h6 {
-    font-family: 'Noto Kufi Arabic', sans-serif;
-    text-transform: none;
-    letter-spacing: 0;
-  }
 }
 
 @layer utilities {
   .font-mono {
     font-family: 'JetBrains Mono', monospace;
-  }
-
-  .font-arabic {
-    font-family: 'Noto Kufi Arabic', sans-serif;
   }
   
   .grid-border {
@@ -165,6 +146,14 @@
   .grid-border-r {
     border-right: var(--grid-border);
   }
+
+  .grid-border-s {
+    border-inline-start: var(--grid-border);
+  }
+
+  .grid-border-e {
+    border-inline-end: var(--grid-border);
+  }
   
   .shadow-card {
     box-shadow: var(--shadow-md);
@@ -175,12 +164,6 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: -0.02em;
-  }
-
-  html[lang="ar"] .text-display {
-    font-family: 'Noto Kufi Arabic', sans-serif;
-    text-transform: none;
-    letter-spacing: 0;
   }
 
   .hover-lift {

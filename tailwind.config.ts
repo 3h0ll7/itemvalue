@@ -65,7 +65,6 @@ export default {
       fontFamily: {
         sans: ['Space Grotesk', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
-        arabic: ['Noto Kufi Arabic', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",

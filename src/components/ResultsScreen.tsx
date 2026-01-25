@@ -1,10 +1,8 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, ExternalLink, RefreshCw } from "lucide-react";
+import { ArrowRight, ExternalLink, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { AnalysisResult } from "@/hooks/useAppState";
 import { GOVERNORATES, type GovernorateId } from "@/lib/governorates";
-import { SettingsMenu } from "@/components/SettingsMenu";
-import { useApp } from "@/contexts/AppContext";
 
 interface ResultsScreenProps {
   result: AnalysisResult;
@@ -29,11 +27,9 @@ export function ResultsScreen({
   onBack,
 }: ResultsScreenProps) {
   const govData = GOVERNORATES.find((g) => g.id === governorate);
-  const { t, isRTL, language } = useApp();
-  const BackIcon = isRTL ? ArrowRight : ArrowLeft;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col" dir="rtl">
       {/* Header */}
       <motion.header
         initial={{ opacity: 0 }}
@@ -44,17 +40,17 @@ export function ResultsScreen({
           onClick={onBack}
           className="w-10 h-10 flex items-center justify-center hover:bg-muted transition-colors"
         >
-          <BackIcon className="w-5 h-5" />
+          <ArrowRight className="w-5 h-5" />
         </button>
         
         <div className="text-center">
-          <h1 className="text-lg">{t('resultsTitle')}</h1>
+          <h1 className="text-lg">النتيجة</h1>
           <p className="text-xs font-mono text-muted-foreground">
-            {language === 'ar' ? govData?.nameAr : govData?.name}
+            {govData?.nameAr}
           </p>
         </div>
         
-        <SettingsMenu />
+        <div className="w-10 h-10" />
       </motion.header>
 
       {/* Content */}
@@ -68,7 +64,7 @@ export function ResultsScreen({
         >
           {/* Image */}
           {imagePreview && (
-            <div className="aspect-square md:aspect-auto grid-border-b md:grid-border-e bg-muted/30">
+            <div className="aspect-square md:aspect-auto grid-border-b md:grid-border-s bg-muted/30">
               <img
                 src={imagePreview}
                 alt="Item"
@@ -88,7 +84,7 @@ export function ResultsScreen({
               </h2>
               <div className="inline-flex items-center gap-2 px-3 py-1 grid-border">
                 <span className="text-xs font-mono">
-                  {t('condition')}: {result.condition}
+                  الحالة: {result.condition}
                 </span>
                 <span className="text-xs font-mono text-muted-foreground">
                   {result.conditionScore}%
@@ -99,7 +95,7 @@ export function ResultsScreen({
             {/* Suggested Price */}
             <div className="grid-border-b p-6 bg-foreground text-background">
               <p className="text-xs font-mono uppercase tracking-widest mb-2 opacity-70">
-                {t('suggestedPrice')}
+                السعر المقترح
               </p>
               <p className="text-4xl md:text-5xl font-mono">
                 {formatPrice(result.suggestedPrice)}
@@ -118,17 +114,17 @@ export function ResultsScreen({
           transition={{ delay: 0.2 }}
           className="grid grid-cols-3 grid-border-b"
         >
-          <div className="p-6 grid-border-e">
+          <div className="p-6 grid-border-s">
             <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-2">
-              {t('lowest')}
+              الأقل
             </p>
             <p className="text-xl md:text-2xl font-mono">
               {formatPrice(result.lowestPrice)}
             </p>
           </div>
-          <div className="p-6 grid-border-e">
+          <div className="p-6 grid-border-s">
             <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-2">
-              {t('average')}
+              المتوسط
             </p>
             <p className="text-xl md:text-2xl font-mono">
               {formatPrice(result.averagePrice)}
@@ -136,7 +132,7 @@ export function ResultsScreen({
           </div>
           <div className="p-6">
             <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-2">
-              {t('highest')}
+              الأعلى
             </p>
             <p className="text-xl md:text-2xl font-mono">
               {formatPrice(result.highestPrice)}
@@ -152,7 +148,7 @@ export function ResultsScreen({
           className="grid-border-b p-6"
         >
           <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-3">
-            {t('sellingStrategy')}
+            استراتيجية البيع
           </p>
           <p className="text-sm leading-relaxed">
             {result.recommendation}
@@ -167,7 +163,7 @@ export function ResultsScreen({
         >
           <div className="grid-border-b py-4 px-6">
             <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
-              {t('similarListings')}
+              إعلانات مشابهة
             </p>
           </div>
           
@@ -184,7 +180,7 @@ export function ResultsScreen({
                     {formatPrice(listing.price)} IQD
                   </p>
                 </div>
-                <ExternalLink className="w-4 h-4 text-muted-foreground shrink-0 ms-4" />
+                <ExternalLink className="w-4 h-4 text-muted-foreground shrink-0 me-4" />
               </a>
             ))}
           </div>
@@ -199,8 +195,8 @@ export function ResultsScreen({
         className="grid-border-t p-6"
       >
         <Button onClick={onReset} className="w-full h-14 text-base">
-          <RefreshCw className="w-4 h-4 me-2" />
-          {t('priceAnother')}
+          <RefreshCw className="w-4 h-4 ms-2" />
+          سعّر شي ثاني
         </Button>
       </motion.div>
     </div>

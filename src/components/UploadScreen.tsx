@@ -1,10 +1,8 @@
 import { useRef, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Camera, Upload, ArrowLeft, ArrowRight, X } from "lucide-react";
+import { Camera, Upload, ArrowRight, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GOVERNORATES, type GovernorateId } from "@/lib/governorates";
-import { SettingsMenu } from "@/components/SettingsMenu";
-import { useApp } from "@/contexts/AppContext";
 
 interface UploadScreenProps {
   governorate: GovernorateId;
@@ -23,10 +21,8 @@ export function UploadScreen({
 }: UploadScreenProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
-  const { t, isRTL, language } = useApp();
 
   const govData = GOVERNORATES.find((g) => g.id === governorate);
-  const BackIcon = isRTL ? ArrowRight : ArrowLeft;
 
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +35,7 @@ export function UploadScreen({
   );
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col" dir="rtl">
       {/* Header */}
       <motion.header
         initial={{ opacity: 0 }}
@@ -50,17 +46,17 @@ export function UploadScreen({
           onClick={onBack}
           className="w-10 h-10 flex items-center justify-center hover:bg-muted transition-colors"
         >
-          <BackIcon className="w-5 h-5" />
+          <ArrowRight className="w-5 h-5" />
         </button>
         
         <div className="text-center">
-          <h1 className="text-lg">{t('uploadTitle')}</h1>
+          <h1 className="text-lg">رفع صورة</h1>
           <p className="text-xs font-mono text-muted-foreground">
-            {language === 'ar' ? govData?.nameAr : govData?.name}
+            {govData?.nameAr}
           </p>
         </div>
         
-        <SettingsMenu />
+        <div className="w-10 h-10" />
       </motion.header>
 
       {/* Main Content */}
@@ -80,7 +76,7 @@ export function UploadScreen({
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="absolute top-4 end-4 w-10 h-10 bg-background grid-border flex items-center justify-center hover:bg-muted transition-colors"
+                className="absolute top-4 start-4 w-10 h-10 bg-background grid-border flex items-center justify-center hover:bg-muted transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -96,7 +92,7 @@ export function UploadScreen({
                 onClick={onStartAnalysis}
                 className="w-full h-14 text-base"
               >
-                {t('analyzeButton')}
+                حلّل السعر
               </Button>
             </motion.div>
           </>
@@ -114,10 +110,10 @@ export function UploadScreen({
               </div>
               
               <h2 className="text-2xl md:text-3xl mb-2 text-center">
-                {t('uploadTitle')}
+                رفع صورة
               </h2>
               <p className="text-muted-foreground font-mono text-sm text-center max-w-xs mb-8">
-                {t('uploadHint')}
+                صوّر الشي اللي تبيعه
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 w-full max-w-sm">
@@ -125,16 +121,16 @@ export function UploadScreen({
                   onClick={() => cameraInputRef.current?.click()}
                   className="flex-1 h-12"
                 >
-                  <Camera className="w-4 h-4 me-2" />
-                  {t('takePhoto')}
+                  <Camera className="w-4 h-4 ms-2" />
+                  التقط صورة
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => fileInputRef.current?.click()}
                   className="flex-1 h-12"
                 >
-                  <Upload className="w-4 h-4 me-2" />
-                  {t('uploadFile')}
+                  <Upload className="w-4 h-4 ms-2" />
+                  اختر من الملفات
                 </Button>
               </div>
             </motion.div>
@@ -148,10 +144,7 @@ export function UploadScreen({
             >
               <div className="grid-border p-4">
                 <p className="text-xs font-mono text-muted-foreground text-center">
-                  {language === 'ar' 
-                    ? 'نصيحة: الإضاءة الجيدة والزوايا الواضحة تساعد على الحصول على أسعار أفضل'
-                    : 'TIP: Good lighting and clear angles help get better prices'
-                  }
+                  نصيحة: الإضاءة الجيدة والزوايا الواضحة تساعد على الحصول على أسعار أفضل
                 </p>
               </div>
             </motion.div>

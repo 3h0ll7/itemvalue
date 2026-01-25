@@ -1,34 +1,25 @@
 import { motion } from "framer-motion";
-import { ArrowRight, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { GOVERNORATES, type GovernorateId } from "@/lib/governorates";
-import { SettingsMenu } from "@/components/SettingsMenu";
-import { useApp } from "@/contexts/AppContext";
 
 interface OnboardingScreenProps {
   onSelectGovernorate: (gov: GovernorateId) => void;
 }
 
 export function OnboardingScreen({ onSelectGovernorate }: OnboardingScreenProps) {
-  const { t, isRTL } = useApp();
-  const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
-
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col" dir="rtl">
       {/* Header */}
       <motion.header
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="grid-border-b py-6 px-6 flex items-center justify-between"
+        className="grid-border-b py-6 px-6 flex items-center justify-center"
       >
-        <div className="flex-1" />
         <div className="text-center">
-          <h1 className="text-2xl md:text-3xl tracking-tight">{t('appName')}</h1>
+          <h1 className="text-2xl md:text-3xl tracking-tight">بلّه</h1>
           <p className="text-sm font-mono text-muted-foreground mt-1">
-            {t('priceEstimator')}
+            مُقدّر الأسعار
           </p>
-        </div>
-        <div className="flex-1 flex justify-end">
-          <SettingsMenu />
         </div>
       </motion.header>
 
@@ -40,10 +31,10 @@ export function OnboardingScreen({ onSelectGovernorate }: OnboardingScreenProps)
         className="grid-border-b py-12 px-6 text-center"
       >
         <h2 className="text-4xl md:text-5xl lg:text-6xl mb-4 font-bold">
-          {t('heroTitle')}
+          شكد تسوه؟
         </h2>
         <p className="text-muted-foreground max-w-md mx-auto text-base leading-relaxed">
-          {t('heroDescription')}
+          الأسماء الزينة ما تشرح نفسها، تخلي المستخدم يجرّب. وهذا واحد منها.
         </p>
       </motion.div>
 
@@ -56,7 +47,7 @@ export function OnboardingScreen({ onSelectGovernorate }: OnboardingScreenProps)
       >
         <div className="grid-border-b py-4 px-6">
           <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
-            {t('selectGovernorate')}
+            اختر المحافظة
           </p>
         </div>
 
@@ -71,13 +62,13 @@ export function OnboardingScreen({ onSelectGovernorate }: OnboardingScreenProps)
                 onClick={() => onSelectGovernorate(gov.id)}
                 className="grid-border p-6 text-start hover:bg-muted/50 transition-colors group"
               >
-                <span className="text-lg font-semibold block mb-1 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform">
-                  {gov.name}
-                </span>
-                <span className="text-sm text-muted-foreground font-arabic">
+                <span className="text-lg font-semibold block mb-1 group-hover:-translate-x-1 transition-transform">
                   {gov.nameAr}
                 </span>
-                <ArrowIcon className="w-4 h-4 mt-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <span className="text-sm text-muted-foreground">
+                  {gov.name}
+                </span>
+                <ArrowLeft className="w-4 h-4 mt-3 opacity-0 group-hover:opacity-100 transition-opacity" />
               </motion.button>
             ))}
           </div>
@@ -92,7 +83,7 @@ export function OnboardingScreen({ onSelectGovernorate }: OnboardingScreenProps)
         className="grid-border-t py-4 px-6"
       >
         <p className="text-xs font-mono text-muted-foreground text-center">
-          {t('poweredBy')} • {t('pricesIn')}
+          مدعوم بالذكاء الاصطناعي • الأسعار بالدينار العراقي
         </p>
       </motion.footer>
     </div>
