@@ -1,20 +1,17 @@
 import { motion } from "framer-motion";
-import { useApp } from "@/contexts/AppContext";
 
 export function AnalyzingScreen() {
-  const { t, language } = useApp();
-
   const steps = [
-    { label: t('identifyingItem'), delay: 0 },
-    { label: t('searchingMarket'), delay: 0.8 },
-    { label: t('calculatingPrice'), delay: 1.6 },
+    { label: 'التعرف على الشي', delay: 0 },
+    { label: 'البحث بالسوق', delay: 0.8 },
+    { label: 'حساب السعر', delay: 1.6 },
   ];
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col" dir="rtl">
       {/* Header */}
       <header className="grid-border-b py-6 px-6">
-        <h1 className="text-2xl text-center">{t('analyzingTitle')}</h1>
+        <h1 className="text-2xl text-center">جاري التحليل</h1>
       </header>
 
       {/* Main Content */}
@@ -48,7 +45,7 @@ export function AnalyzingScreen() {
           {steps.map((step, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, x: language === 'ar' ? 20 : -20 }}
+              initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: step.delay }}
               className="grid-border p-4 flex items-center justify-between"
@@ -68,7 +65,7 @@ export function AnalyzingScreen() {
       {/* Footer */}
       <footer className="grid-border-t py-4 px-6">
         <p className="text-xs font-mono text-muted-foreground text-center">
-          {t('analyzingHint')}
+          هذا عادةً ياخذ ثواني
         </p>
       </footer>
     </div>
