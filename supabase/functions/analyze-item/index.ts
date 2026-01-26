@@ -125,10 +125,11 @@ For valid items, respond with this exact JSON structure:
     }
 
     // Check if it's a non-sellable item
-    if (parsedResult.error === 'not_sellable_item') {
+    // NOTE: Return 200 so the client can read the JSON body without FunctionsHttpError.
+    if (parsedResult?.error === 'not_sellable_item') {
       return new Response(
         JSON.stringify(parsedResult),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
