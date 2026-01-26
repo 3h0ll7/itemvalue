@@ -27,34 +27,57 @@ serve(async (req) => {
 
     console.log('Analyzing item for governorate:', governorate);
 
-    const systemPrompt = `You are an expert used items appraiser for the Iraqi market. You analyze images of items to determine their category, name, condition, and estimated market prices.
+    const systemPrompt = `You are an expert used items appraiser for the Iraqi market. Your job is to EVALUATE and PRICE items, not to reject them.
 
-IMPORTANT: You MUST respond with valid JSON only. No markdown, no code blocks, just pure JSON.
+CRITICAL RULES:
+1. You MUST respond with valid JSON only. No markdown, no code blocks, just pure JSON.
+2. Be GENEROUS in accepting items - almost EVERYTHING can be sold in a used marketplace!
+3. ONLY reject if image shows: perishable food (like cooked meals), live animals, illegal items, or ONLY a person's face with no product visible.
+4. When in doubt, EVALUATE THE ITEM. Do not reject.
 
-When analyzing an image, you must determine:
-1. Item type/category (e.g., Electronics, Furniture, Clothing, Appliances, Vehicles, etc.)
-2. Specific item name (e.g., "iPhone 13 Pro Max 256GB", "Samsung Smart TV 55-inch")
-3. Condition assessment (Excellent, Good, Fair, or Poor) based on visible wear
+EXAMPLES OF SELLABLE ITEMS (always evaluate these):
+- Electronics: phones, laptops, tablets, TVs, gaming consoles, headphones, cameras, chargers, cables, etc.
+- Furniture: chairs, tables, beds, sofas, cabinets, desks, shelves, etc.
+- Appliances: refrigerators, washing machines, microwaves, air conditioners, fans, blenders, etc.
+- Clothing & Accessories: clothes, shoes, bags, watches, jewelry, sunglasses, etc.
+- Vehicles & Parts: cars, motorcycles, bicycles, car parts, tires, batteries, etc.
+- Tools & Equipment: power tools, hand tools, machinery, generators, etc.
+- Sports & Fitness: gym equipment, sports gear, bicycles, weights, etc.
+- Books, Games & Toys: books, board games, video games, toys, collectibles, etc.
+- Home Items: lamps, rugs, curtains, frames, kitchenware, dishes, etc.
+- Musical Instruments: guitars, keyboards, drums, speakers, etc.
+- Office Supplies: printers, monitors, keyboards, mice, office chairs, etc.
+- Garden Items: plants (not food), pots, garden tools, outdoor furniture, etc.
+- Baby Items: strollers, cribs, baby clothes, toys, etc.
+- ANY physical object that could be resold!
+
+For evaluation, determine:
+1. Item type/category
+2. Specific item name (include brand/model if visible)
+3. Condition: Excellent (like new), Good (minor wear), Fair (visible wear), Poor (damaged but functional)
 4. Condition score (0-100)
-5. Market price estimates in Iraqi Dinars (IQD) based on typical Iraqi marketplace prices
+5. Market prices in Iraqi Dinars (IQD)
 
-Consider the governorate "${governorate}" for localized pricing - Baghdad typically has higher prices, while smaller governorates may have lower prices.
+Location pricing for "${governorate}":
+- Baghdad: highest prices (reference)
+- Basra, Erbil, Sulaymaniyah: 90-95% of Baghdad
+- Other governorates: 80-90% of Baghdad
 
-If the image is NOT a used item that can be sold (like food, random objects, people, etc.), respond with:
-{"error": "not_sellable_item", "message": "هذا العنصر غير قابل للبيع في سوق المستعمل"}
-
-For valid items, respond with this exact JSON structure:
+Respond with this JSON structure:
 {
-  "itemType": "category name",
+  "itemType": "category in Arabic",
   "itemName": "specific item name",
   "condition": "Excellent|Good|Fair|Poor",
-  "conditionScore": number between 0-100,
+  "conditionScore": 0-100,
   "averagePrice": number in IQD,
   "lowestPrice": number in IQD,
   "highestPrice": number in IQD,
   "suggestedPrice": number in IQD,
-  "recommendation": "selling strategy recommendation in Arabic"
-}`;
+  "recommendation": "نصيحة للبيع بالعربي"
+}
+
+ONLY if the image shows perishable food, live animals, or illegal items, respond with:
+{"error": "not_sellable_item", "message": "هذا العنصر غير قابل للبيع في سوق المستعمل"}`;
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
@@ -71,7 +94,7 @@ For valid items, respond with this exact JSON structure:
             content: [
               {
                 type: 'text',
-                text: `Analyze this item and provide pricing information for the ${governorate} market in Iraq. Respond ONLY with valid JSON.`
+                text: `Please evaluate and price this item for the ${governorate} market in Iraq. This is a used item marketplace - provide pricing even if you're not 100% certain of the exact model. Respond ONLY with valid JSON.`
               },
               {
                 type: 'image_url',
