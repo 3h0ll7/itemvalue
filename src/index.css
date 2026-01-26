@@ -2,34 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap');
 
-/* Stacked Store Inspired - Minimalist Gallery Aesthetic */
+/* Stacked Store Inspired - Warm Beige Gallery Aesthetic */
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 0 0% 8%;
+    /* Warm beige/cream background like Stacked Store */
+    --background: 40 30% 94%;
+    --foreground: 30 10% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 8%;
+    --card: 40 25% 96%;
+    --card-foreground: 30 10% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 8%;
+    --popover: 40 25% 96%;
+    --popover-foreground: 30 10% 15%;
 
-    /* Clean black accent */
-    --primary: 0 0% 8%;
-    --primary-foreground: 0 0% 100%;
+    /* Deep brown/charcoal accent */
+    --primary: 30 10% 15%;
+    --primary-foreground: 40 30% 94%;
 
-    /* Light warm gray */
-    --secondary: 30 5% 92%;
-    --secondary-foreground: 0 0% 8%;
+    /* Warm tan */
+    --secondary: 35 20% 88%;
+    --secondary-foreground: 30 10% 15%;
 
-    --muted: 30 5% 96%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 35 15% 90%;
+    --muted-foreground: 30 8% 45%;
 
-    --accent: 30 5% 92%;
-    --accent-foreground: 0 0% 8%;
+    --accent: 35 20% 88%;
+    --accent-foreground: 30 10% 15%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
@@ -37,51 +38,52 @@
     --success: 142 71% 45%;
     --success-foreground: 0 0% 100%;
 
-    --border: 0 0% 88%;
-    --input: 0 0% 88%;
-    --ring: 0 0% 8%;
+    /* Warm border color */
+    --border: 35 15% 82%;
+    --input: 35 15% 82%;
+    --ring: 30 10% 15%;
 
     --radius: 0px;
 
     /* Grid system */
-    --grid-border: 1px solid hsl(0 0% 88%);
+    --grid-border: 1px solid hsl(35 15% 82%);
     
     /* Shadows - very subtle */
-    --shadow-sm: 0 1px 2px hsl(0 0% 0% / 0.04);
-    --shadow-md: 0 2px 8px hsl(0 0% 0% / 0.06);
-    --shadow-lg: 0 4px 16px hsl(0 0% 0% / 0.08);
+    --shadow-sm: 0 1px 2px hsl(30 10% 0% / 0.04);
+    --shadow-md: 0 2px 8px hsl(30 10% 0% / 0.06);
+    --shadow-lg: 0 4px 16px hsl(30 10% 0% / 0.08);
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 0 0% 8%;
-    --sidebar-primary: 0 0% 8%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 30 5% 96%;
-    --sidebar-accent-foreground: 0 0% 8%;
-    --sidebar-border: 0 0% 88%;
-    --sidebar-ring: 0 0% 8%;
+    --sidebar-background: 40 30% 94%;
+    --sidebar-foreground: 30 10% 15%;
+    --sidebar-primary: 30 10% 15%;
+    --sidebar-primary-foreground: 40 30% 94%;
+    --sidebar-accent: 35 15% 90%;
+    --sidebar-accent-foreground: 30 10% 15%;
+    --sidebar-border: 35 15% 82%;
+    --sidebar-ring: 30 10% 15%;
   }
 
   .dark {
-    --background: 0 0% 6%;
-    --foreground: 0 0% 95%;
+    --background: 30 8% 10%;
+    --foreground: 40 20% 90%;
 
-    --card: 0 0% 10%;
-    --card-foreground: 0 0% 95%;
+    --card: 30 8% 14%;
+    --card-foreground: 40 20% 90%;
 
-    --popover: 0 0% 10%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 30 8% 14%;
+    --popover-foreground: 40 20% 90%;
 
-    --primary: 0 0% 95%;
-    --primary-foreground: 0 0% 6%;
+    --primary: 40 20% 90%;
+    --primary-foreground: 30 8% 10%;
 
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 30 10% 20%;
+    --secondary-foreground: 40 20% 90%;
 
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 30 10% 20%;
+    --muted-foreground: 35 10% 55%;
 
-    --accent: 0 0% 15%;
-    --accent-foreground: 0 0% 95%;
+    --accent: 30 10% 20%;
+    --accent-foreground: 40 20% 90%;
 
     --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 100%;
@@ -89,18 +91,18 @@
     --success: 142 60% 50%;
     --success-foreground: 0 0% 100%;
 
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 0 0% 95%;
+    --border: 30 8% 22%;
+    --input: 30 8% 22%;
+    --ring: 40 20% 90%;
 
-    --sidebar-background: 0 0% 8%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 0 0% 95%;
-    --sidebar-primary-foreground: 0 0% 6%;
-    --sidebar-accent: 0 0% 15%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 18%;
-    --sidebar-ring: 0 0% 95%;
+    --sidebar-background: 30 8% 12%;
+    --sidebar-foreground: 40 20% 90%;
+    --sidebar-primary: 40 20% 90%;
+    --sidebar-primary-foreground: 30 8% 10%;
+    --sidebar-accent: 30 10% 20%;
+    --sidebar-accent-foreground: 40 20% 90%;
+    --sidebar-border: 30 8% 22%;
+    --sidebar-ring: 40 20% 90%;
   }
 }
 
@@ -111,14 +113,14 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'DM Sans', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 400;
     text-transform: uppercase;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.02em;
   }
 }
 
@@ -160,10 +162,10 @@
   }
   
   .text-display {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 400;
     text-transform: uppercase;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.02em;
   }
 
   .hover-lift {

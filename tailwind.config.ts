@@ -63,8 +63,9 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Space Grotesk', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        sans: ['DM Sans', 'sans-serif'],
+        display: ['Bebas Neue', 'sans-serif'],
+        mono: ['DM Sans', 'monospace'],
       },
       borderRadius: {
         lg: "var(--radius)",
