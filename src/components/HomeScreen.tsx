@@ -96,6 +96,21 @@ export function HomeScreen({ onStartScan, recentItems, onViewHistory }: HomeScre
           )}
         </div>
       </motion.div>
+
+      {/* Developer Credit */}
+      <div className="grid-border-t py-4 px-4 text-center">
+        <p className="text-xs text-muted-foreground mb-1">
+          Developed by: <span className="font-medium text-foreground">𝓗𝓪𝓼𝓼𝓪𝓷 𝓼𝓪𝓵𝓶𝓪𝓷</span>
+        </p>
+        <a 
+          href="https://linktr.ee/3h0ll" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-xs font-mono text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+        >
+          @3h0ll
+        </a>
+      </div>
     </div>
   );
 }
