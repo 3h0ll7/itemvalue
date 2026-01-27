@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { imageBase64, governorate } = await req.json();
+    const { imageBase64, governorate, itemCondition, purchaseYear } = await req.json();
 
     if (!imageBase64) {
       return new Response(
@@ -25,7 +25,17 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY is not configured');
     }
 
-    console.log('Analyzing item for governorate:', governorate);
+    console.log('Analyzing item for governorate:', governorate, 'condition:', itemCondition, 'year:', purchaseYear);
+
+    const currentYear = new Date().getFullYear();
+    const itemAge = purchaseYear ? currentYear - purchaseYear : null;
+    const ageContext = itemAge !== null 
+      ? `The item was purchased ${itemAge} year(s) ago (in ${purchaseYear}). Factor depreciation based on age.`
+      : 'Purchase year unknown.';
+    
+    const conditionContext = itemCondition 
+      ? `The seller describes the item condition as: "${itemCondition}". Use this to adjust pricing.`
+      : '';
 
     const systemPrompt = `You are an expert used items appraiser for the Iraqi market. Your job is to EVALUATE and PRICE items, not to reject them.
 
@@ -34,6 +44,21 @@ CRITICAL RULES:
 2. Be GENEROUS in accepting items - almost EVERYTHING can be sold in a used marketplace!
 3. ONLY reject if image shows: perishable food (like cooked meals), live animals, illegal items, or ONLY a person's face with no product visible.
 4. When in doubt, EVALUATE THE ITEM. Do not reject.
+
+SELLER-PROVIDED INFORMATION:
+${conditionContext}
+${ageContext}
+
+CONDITION PRICING ADJUSTMENTS:
+- جديد (New): 85-95% of original retail price
+- مستعمل نظيف (Clean Used): 60-80% of original retail price
+- مستهلك (Worn): 30-55% of original retail price
+
+AGE DEPRECIATION:
+- 0-1 years: minimal depreciation (5-10%)
+- 2-3 years: moderate depreciation (15-25%)
+- 4-5 years: significant depreciation (30-40%)
+- 6+ years: heavy depreciation (45-60%+)
 
 EXAMPLES OF SELLABLE ITEMS (always evaluate these):
 - Electronics: phones, laptops, tablets, TVs, gaming consoles, headphones, cameras, chargers, cables, etc.
@@ -57,6 +82,7 @@ For evaluation, determine:
 3. Condition: Excellent (like new), Good (minor wear), Fair (visible wear), Poor (damaged but functional)
 4. Condition score (0-100)
 5. Market prices in Iraqi Dinars (IQD)
+6. Confidence score (0-100) based on how certain you are about the pricing
 
 Location pricing for "${governorate}":
 - Baghdad: highest prices (reference)
@@ -73,7 +99,17 @@ Respond with this JSON structure:
   "lowestPrice": number in IQD,
   "highestPrice": number in IQD,
   "suggestedPrice": number in IQD,
-  "recommendation": "نصيحة للبيع بالعربي"
+  "recommendation": "نصيحة للبيع بالعربي",
+  "confidenceScore": 0-100,
+  "priceDistribution": [
+    {"range": "lowest range", "count": number, "percentage": number},
+    {"range": "mid-low range", "count": number, "percentage": number},
+    {"range": "mid-high range", "count": number, "percentage": number},
+    {"range": "highest range", "count": number, "percentage": number}
+  ],
+  "similarSales": [
+    {"title": "similar item sold", "price": number, "soldDate": "منذ X أيام", "condition": "حالة المنتج"}
+  ]
 }
 
 ONLY if the image shows perishable food, live animals, or illegal items, respond with:
@@ -94,7 +130,7 @@ ONLY if the image shows perishable food, live animals, or illegal items, respond
             content: [
               {
                 type: 'text',
-                text: `Please evaluate and price this item for the ${governorate} market in Iraq. This is a used item marketplace - provide pricing even if you're not 100% certain of the exact model. Respond ONLY with valid JSON.`
+                text: `Please evaluate and price this item for the ${governorate} market in Iraq. The seller says the condition is "${itemCondition || 'not specified'}" and was purchased in ${purchaseYear || 'unknown year'}. This is a used item marketplace - provide pricing with confidence metrics. Respond ONLY with valid JSON.`
               },
               {
                 type: 'image_url',
