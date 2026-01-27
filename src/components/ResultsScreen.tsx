@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import type { AnalysisResult } from "@/hooks/useAppState";
 import { GOVERNORATES, type GovernorateId } from "@/lib/governorates";
 import { ConfidenceSection } from "@/components/results/ConfidenceSection";
+import { ShareSection } from "@/components/results/ShareSection";
 
 interface ResultsScreenProps {
   result: AnalysisResult;
@@ -164,7 +165,8 @@ export function ResultsScreen({
           </p>
         </motion.div>
 
-        {/* Active Listings */}
+        {/* Share Section */}
+        <ShareSection result={result} governorateName={govData?.nameAr || ''} />
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
