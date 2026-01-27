@@ -3,6 +3,7 @@ import { ArrowRight, ExternalLink, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { AnalysisResult } from "@/hooks/useAppState";
 import { GOVERNORATES, type GovernorateId } from "@/lib/governorates";
+import { ConfidenceSection } from "@/components/results/ConfidenceSection";
 
 interface ResultsScreenProps {
   result: AnalysisResult;
@@ -140,11 +141,19 @@ export function ResultsScreen({
           </div>
         </motion.div>
 
+        {/* Confidence Section with Histogram */}
+        <ConfidenceSection
+          confidenceScore={result.confidenceScore}
+          priceDistribution={result.priceDistribution}
+          similarSales={result.similarSales}
+          suggestedPrice={result.suggestedPrice}
+        />
+
         {/* Recommendation */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.5 }}
           className="grid-border-b p-6"
         >
           <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-3">
@@ -155,15 +164,15 @@ export function ResultsScreen({
           </p>
         </motion.div>
 
-        {/* Similar Listings */}
+        {/* Active Listings */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.55 }}
         >
           <div className="grid-border-b py-4 px-6">
             <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
-              إعلانات مشابهة
+              إعلانات نشطة الآن
             </p>
           </div>
           
@@ -191,7 +200,7 @@ export function ResultsScreen({
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
+        transition={{ delay: 0.6 }}
         className="grid-border-t p-6"
       >
         <Button onClick={onReset} className="w-full h-14 text-base">

@@ -17,8 +17,12 @@ const Index = () => {
     imagePreview,
     analysisResult,
     analysisHistory,
+    itemCondition,
+    purchaseYear,
     selectGovernorate,
     uploadImage,
+    selectItemCondition,
+    selectPurchaseYear,
     startAnalysis,
     reset,
     goBack,
@@ -84,8 +88,12 @@ const Index = () => {
         <ScanScreen
           governorate={governorate}
           imagePreview={imagePreview}
+          itemCondition={itemCondition}
+          purchaseYear={purchaseYear}
           onSelectGovernorate={selectGovernorate}
           onUploadImage={uploadImage}
+          onSelectCondition={selectItemCondition}
+          onSelectPurchaseYear={selectPurchaseYear}
           onStartAnalysis={handleStartAnalysis}
           showGovernorateSelect={showGovernorateSelect}
           onToggleGovernorateSelect={() => setShowGovernorateSelect(!showGovernorateSelect)}

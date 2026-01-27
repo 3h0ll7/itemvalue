@@ -4,6 +4,20 @@ import type { GovernorateId } from "@/lib/governorates";
 import { analyzeItem } from "@/lib/api/analyzeItem";
 
 export type AppScreen = "idle" | "analyzing" | "results";
+export type ItemCondition = "new" | "clean_used" | "worn";
+
+export interface PriceDistribution {
+  range: string;
+  count: number;
+  percentage: number;
+}
+
+export interface SimilarSale {
+  title: string;
+  price: number;
+  soldDate: string;
+  condition: string;
+}
 
 export interface AnalysisResult {
   itemType: string;
@@ -16,6 +30,9 @@ export interface AnalysisResult {
   suggestedPrice: number;
   recommendation: string;
   listingLinks: { title: string; price: number; url: string }[];
+  priceDistribution?: PriceDistribution[];
+  similarSales?: SimilarSale[];
+  confidenceScore?: number;
 }
 
 export function useAppState() {
@@ -25,6 +42,8 @@ export function useAppState() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [analysisHistory, setAnalysisHistory] = useState<AnalysisResult[]>([]);
+  const [itemCondition, setItemCondition] = useState<ItemCondition | null>(null);
+  const [purchaseYear, setPurchaseYear] = useState<number | null>(null);
 
   const selectGovernorate = useCallback((gov: GovernorateId) => {
     setGovernorate(gov);
@@ -39,16 +58,29 @@ export function useAppState() {
     reader.readAsDataURL(file);
   }, []);
 
+  const selectItemCondition = useCallback((condition: ItemCondition) => {
+    setItemCondition(condition);
+  }, []);
+
+  const selectPurchaseYear = useCallback((year: number) => {
+    setPurchaseYear(year);
+  }, []);
+
   const startAnalysis = useCallback(async () => {
     if (!imagePreview || !governorate) {
       toast.error("الرجاء اختيار صورة ومحافظة أولاً");
       return;
     }
 
+    if (!itemCondition) {
+      toast.error("الرجاء اختيار حالة المنتج");
+      return;
+    }
+
     setScreen("analyzing");
     
     try {
-      const result = await analyzeItem(imagePreview, governorate);
+      const result = await analyzeItem(imagePreview, governorate, itemCondition, purchaseYear);
       
       if (result.success === true) {
         setAnalysisResult(result.data);
@@ -65,7 +97,7 @@ export function useAppState() {
       toast.error("حدث خطأ أثناء التحليل. الرجاء المحاولة مرة أخرى.");
       setScreen("idle");
     }
-  }, [imagePreview, governorate]);
+  }, [imagePreview, governorate, itemCondition, purchaseYear]);
 
   const reset = useCallback(() => {
     setScreen("idle");
@@ -73,6 +105,8 @@ export function useAppState() {
     setImagePreview(null);
     setAnalysisResult(null);
     setGovernorate(null);
+    setItemCondition(null);
+    setPurchaseYear(null);
   }, []);
 
   const goBack = useCallback(() => {
@@ -91,8 +125,12 @@ export function useAppState() {
     imagePreview,
     analysisResult,
     analysisHistory,
+    itemCondition,
+    purchaseYear,
     selectGovernorate,
     uploadImage,
+    selectItemCondition,
+    selectPurchaseYear,
     startAnalysis,
     reset,
     goBack,
