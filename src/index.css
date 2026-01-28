@@ -38,6 +38,18 @@
     --success: 142 71% 45%;
     --success-foreground: 0 0% 100%;
 
+    /* Colorful section accents */
+    --section-pink: 320 85% 65%;
+    --section-pink-foreground: 0 0% 100%;
+    --section-purple: 270 70% 55%;
+    --section-purple-foreground: 0 0% 100%;
+    --section-orange: 25 95% 55%;
+    --section-orange-foreground: 0 0% 100%;
+    --section-yellow: 45 95% 55%;
+    --section-yellow-foreground: 30 10% 15%;
+    --section-teal: 175 70% 45%;
+    --section-teal-foreground: 0 0% 100%;
+
     /* Warm border color */
     --border: 35 15% 82%;
     --input: 35 15% 82%;
@@ -90,6 +102,18 @@
 
     --success: 142 60% 50%;
     --success-foreground: 0 0% 100%;
+
+    /* Colorful section accents - dark mode */
+    --section-pink: 320 80% 60%;
+    --section-pink-foreground: 0 0% 100%;
+    --section-purple: 270 65% 50%;
+    --section-purple-foreground: 0 0% 100%;
+    --section-orange: 25 90% 50%;
+    --section-orange-foreground: 0 0% 100%;
+    --section-yellow: 45 90% 50%;
+    --section-yellow-foreground: 30 10% 15%;
+    --section-teal: 175 65% 40%;
+    --section-teal-foreground: 0 0% 100%;
 
     --border: 30 8% 22%;
     --input: 30 8% 22%;

@@ -17,10 +17,10 @@ export function HistoryScreen({ items }: HistoryScreenProps) {
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden" dir="rtl">
-      {/* Header */}
-      <div className="grid-border-b py-4 px-4 text-center">
+      {/* Header - Yellow Section */}
+      <div className="bg-section-yellow text-section-yellow-foreground py-4 px-4 text-center">
         <h1 className="text-xl font-semibold">سجل التقييمات</h1>
-        <p className="text-xs text-muted-foreground mt-1">
+        <p className="text-xs opacity-70 mt-1">
           استعرض جميع الأغراض التي تم تقييمها سابقاً
         </p>
       </div>

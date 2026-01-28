@@ -32,22 +32,22 @@ export function ResultsScreen({
 
   return (
     <div className="min-h-screen bg-background flex flex-col" dir="rtl">
-      {/* Header */}
+      {/* Header - Teal Section */}
       <motion.header
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="grid-border-b py-4 px-6 flex items-center justify-between"
+        className="bg-section-teal text-section-teal-foreground py-4 px-6 flex items-center justify-between"
       >
         <button 
           onClick={onBack}
-          className="w-10 h-10 flex items-center justify-center hover:bg-muted transition-colors"
+          className="w-10 h-10 flex items-center justify-center hover:bg-white/10 transition-colors"
         >
           <ArrowRight className="w-5 h-5" />
         </button>
         
         <div className="text-center">
           <h1 className="text-lg">النتيجة</h1>
-          <p className="text-xs font-mono text-muted-foreground">
+          <p className="text-xs font-mono opacity-70">
             {govData?.nameAr}
           </p>
         </div>
@@ -94,8 +94,8 @@ export function ResultsScreen({
               </div>
             </div>
 
-            {/* Suggested Price */}
-            <div className="grid-border-b p-6 bg-foreground text-background">
+            {/* Suggested Price - Pink Section */}
+            <div className="grid-border-b p-6 bg-section-pink text-section-pink-foreground">
               <p className="text-xs font-mono uppercase tracking-widest mb-2 opacity-70">
                 السعر المقترح
               </p>
@@ -150,17 +150,17 @@ export function ResultsScreen({
           suggestedPrice={result.suggestedPrice}
         />
 
-        {/* Recommendation */}
+        {/* Recommendation - Purple Section */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="grid-border-b p-6"
+          className="bg-section-purple text-section-purple-foreground p-6"
         >
-          <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-3">
+          <p className="text-xs font-mono uppercase tracking-widest mb-3 opacity-70">
             استراتيجية البيع
           </p>
-          <p className="text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed opacity-90">
             {result.recommendation}
           </p>
         </motion.div>
