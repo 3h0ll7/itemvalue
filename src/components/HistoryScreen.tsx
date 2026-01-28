@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Search, MapPin, Tag, CheckCircle } from "lucide-react";
+import { Search, MapPin, Tag, CheckCircle, History, Clock } from "lucide-react";
 import { useState } from "react";
 import type { AnalysisResult } from "@/hooks/useAppState";
 
@@ -18,9 +18,16 @@ export function HistoryScreen({ items }: HistoryScreenProps) {
   return (
     <div className="flex-1 flex flex-col overflow-hidden" dir="rtl">
       {/* Header - Yellow Section */}
-      <div className="bg-section-yellow text-section-yellow-foreground py-4 px-4 text-center">
-        <h1 className="text-xl font-semibold">سجل التقييمات</h1>
-        <p className="text-xs opacity-70 mt-1">
+      <div className="bg-section-yellow text-section-yellow-foreground py-4 px-4 text-center relative overflow-hidden">
+        {/* Decorative Icons */}
+        <div className="absolute start-4 top-1/2 -translate-y-1/2 opacity-20">
+          <History className="w-10 h-10" />
+        </div>
+        <div className="absolute end-6 top-1/2 -translate-y-1/2 opacity-15">
+          <Clock className="w-8 h-8" />
+        </div>
+        <h1 className="text-xl font-semibold relative z-10">سجل التقييمات</h1>
+        <p className="text-xs opacity-70 mt-1 relative z-10">
           استعرض جميع الأغراض التي تم تقييمها سابقاً
         </p>
       </div>

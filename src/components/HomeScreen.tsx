@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Plus, ArrowLeft, Instagram, Twitter } from "lucide-react";
+import { Plus, ArrowLeft, Instagram, Twitter, Sparkles, TrendingUp, Zap, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { AnalysisResult } from "@/hooks/useAppState";
 
@@ -16,21 +16,31 @@ export function HomeScreen({ onStartScan, recentItems, onViewHistory }: HomeScre
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="m-4 p-8 grid-border bg-section-pink text-section-pink-foreground"
+        className="m-4 p-8 grid-border bg-section-pink text-section-pink-foreground relative overflow-hidden"
       >
-        <h1 className="text-3xl md:text-4xl lg:text-5xl mb-2">
+        {/* Decorative Icons */}
+        <div className="absolute top-4 start-4 opacity-20">
+          <Sparkles className="w-16 h-16" />
+        </div>
+        <div className="absolute bottom-4 end-24 opacity-15">
+          <TrendingUp className="w-12 h-12 rotate-12" />
+        </div>
+        <div className="absolute top-1/2 start-1/4 opacity-10">
+          <Zap className="w-8 h-8 -rotate-12" />
+        </div>
+        <h1 className="text-3xl md:text-4xl lg:text-5xl mb-2 relative z-10">
           شكد تسوه؟
         </h1>
-        <h2 className="text-xl md:text-2xl mb-4 opacity-90">
+        <h2 className="text-xl md:text-2xl mb-4 opacity-90 relative z-10">
           اعرف قيمة أغراضك
         </h2>
-        <p className="text-sm opacity-70 mb-6 max-w-md">
+        <p className="text-sm opacity-70 mb-6 max-w-md relative z-10">
           استخدم الذكاء الاصطناعي لتسعير الأغراض المستعملة في العراق. صوّر، حلّل، وبيع بالسعر الصح.
         </p>
         <Button
           onClick={onStartScan}
           variant="outline"
-          className="bg-foreground text-background hover:bg-foreground/90 h-12 px-6 border-foreground"
+          className="bg-foreground text-background hover:bg-foreground/90 h-12 px-6 border-foreground relative z-10"
         >
           <Plus className="w-4 h-4 ms-2" />
           قيّم غرضك الآن
@@ -45,12 +55,15 @@ export function HomeScreen({ onStartScan, recentItems, onViewHistory }: HomeScre
         className="flex-1 flex flex-col"
       >
         {/* Purple Section Header */}
-        <div className="bg-section-purple text-section-purple-foreground py-3 px-4 flex items-center justify-between">
-          <h3 className="text-sm font-semibold">أحدث التقييمات</h3>
+        <div className="bg-section-purple text-section-purple-foreground py-3 px-4 flex items-center justify-between relative overflow-hidden">
+          <div className="absolute start-4 top-1/2 -translate-y-1/2 opacity-20">
+            <Star className="w-6 h-6" />
+          </div>
+          <h3 className="text-sm font-semibold relative z-10">أحدث التقييمات</h3>
           {recentItems.length > 0 && (
             <button 
               onClick={onViewHistory}
-              className="text-xs font-mono text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+              className="text-xs font-mono opacity-80 hover:opacity-100 transition-opacity flex items-center gap-1 relative z-10"
             >
               عرض الكل
               <ArrowLeft className="w-3 h-3" />
@@ -99,8 +112,15 @@ export function HomeScreen({ onStartScan, recentItems, onViewHistory }: HomeScre
       </motion.div>
 
       {/* Developer Credit - Orange Section */}
-      <div className="bg-section-orange text-section-orange-foreground py-4 px-4 text-center">
-        <p className="text-xs opacity-80 mb-2">
+      <div className="bg-section-orange text-section-orange-foreground py-4 px-4 text-center relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute start-4 top-1/2 -translate-y-1/2 opacity-20">
+          <div className="w-8 h-8 border-2 border-current rotate-45" />
+        </div>
+        <div className="absolute end-8 top-1/2 -translate-y-1/2 opacity-20">
+          <div className="w-6 h-6 rounded-full border-2 border-current" />
+        </div>
+        <p className="text-xs opacity-80 mb-2 relative z-10">
           Developed by: <span className="font-medium">𝓗𝓪𝓼𝓼𝓪𝓷 𝓼𝓪𝓵𝓶𝓪𝓷</span>
         </p>
         <div className="flex items-center justify-center gap-4">
