@@ -35,6 +35,26 @@ export default {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
         },
+        "section-pink": {
+          DEFAULT: "hsl(var(--section-pink))",
+          foreground: "hsl(var(--section-pink-foreground))",
+        },
+        "section-purple": {
+          DEFAULT: "hsl(var(--section-purple))",
+          foreground: "hsl(var(--section-purple-foreground))",
+        },
+        "section-orange": {
+          DEFAULT: "hsl(var(--section-orange))",
+          foreground: "hsl(var(--section-orange-foreground))",
+        },
+        "section-yellow": {
+          DEFAULT: "hsl(var(--section-yellow))",
+          foreground: "hsl(var(--section-yellow-foreground))",
+        },
+        "section-teal": {
+          DEFAULT: "hsl(var(--section-teal))",
+          foreground: "hsl(var(--section-teal-foreground))",
+        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",

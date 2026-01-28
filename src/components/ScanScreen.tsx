@@ -74,10 +74,10 @@ export function ScanScreen({
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden" dir="rtl">
-      {/* Header */}
-      <div className="grid-border-b py-4 px-4 text-center">
+      {/* Header - Teal Section */}
+      <div className="bg-section-teal text-section-teal-foreground py-4 px-4 text-center">
         <h1 className="text-xl font-semibold">فحص جديد</h1>
-        <p className="text-xs text-muted-foreground mt-1">
+        <p className="text-xs opacity-80 mt-1">
           صوّر الغرض واعرف سعره فوراً
         </p>
       </div>
@@ -131,21 +131,21 @@ export function ScanScreen({
           )}
         </motion.div>
 
-        {/* Location Section */}
+        {/* Location Section - Yellow */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="grid-border p-4"
+          className="grid-border bg-section-yellow text-section-yellow-foreground p-4"
         >
           <div className="flex items-center gap-2 mb-3">
-            <MapPin className="w-4 h-4 text-muted-foreground" />
+            <MapPin className="w-4 h-4 opacity-70" />
             <p className="text-sm font-semibold">موقع البيع (المحافظة)</p>
           </div>
 
           <button
             onClick={onToggleGovernorateSelect}
-            className="w-full grid-border p-3 flex items-center justify-between hover:bg-muted/30 transition-colors"
+            className="w-full border border-foreground/30 p-3 flex items-center justify-between hover:bg-foreground/10 transition-colors bg-background text-foreground"
           >
             <ChevronDown className={`w-4 h-4 transition-transform ${showGovernorateSelect ? 'rotate-180' : ''}`} />
             <span className="font-mono">
@@ -178,21 +178,21 @@ export function ScanScreen({
           )}
         </motion.div>
 
-        {/* Condition Section */}
+        {/* Condition Section - Purple */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          className="grid-border p-4"
+          className="grid-border bg-section-purple text-section-purple-foreground p-4"
         >
           <div className="flex items-center gap-2 mb-3">
-            <Package className="w-4 h-4 text-muted-foreground" />
+            <Package className="w-4 h-4 opacity-70" />
             <p className="text-sm font-semibold">حالة المنتج</p>
           </div>
 
           <button
             onClick={() => setShowConditionSelect(!showConditionSelect)}
-            className="w-full grid-border p-3 flex items-center justify-between hover:bg-muted/30 transition-colors"
+            className="w-full border border-white/30 p-3 flex items-center justify-between hover:bg-white/10 transition-colors bg-background text-foreground"
           >
             <ChevronDown className={`w-4 h-4 transition-transform ${showConditionSelect ? 'rotate-180' : ''}`} />
             <span className="font-mono">
@@ -230,21 +230,21 @@ export function ScanScreen({
           )}
         </motion.div>
 
-        {/* Purchase Year Section */}
+        {/* Purchase Year Section - Orange */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="grid-border p-4"
+          className="grid-border bg-section-orange text-section-orange-foreground p-4"
         >
           <div className="flex items-center gap-2 mb-3">
-            <Calendar className="w-4 h-4 text-muted-foreground" />
+            <Calendar className="w-4 h-4 opacity-70" />
             <p className="text-sm font-semibold">سنة الشراء (اختياري)</p>
           </div>
 
           <button
             onClick={() => setShowYearSelect(!showYearSelect)}
-            className="w-full grid-border p-3 flex items-center justify-between hover:bg-muted/30 transition-colors"
+            className="w-full border border-white/30 p-3 flex items-center justify-between hover:bg-white/10 transition-colors bg-background text-foreground"
           >
             <ChevronDown className={`w-4 h-4 transition-transform ${showYearSelect ? 'rotate-180' : ''}`} />
             <span className="font-mono">

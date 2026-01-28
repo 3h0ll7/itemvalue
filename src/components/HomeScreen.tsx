@@ -12,11 +12,11 @@ interface HomeScreenProps {
 export function HomeScreen({ onStartScan, recentItems, onViewHistory }: HomeScreenProps) {
   return (
     <div className="flex-1 flex flex-col overflow-hidden" dir="rtl">
-      {/* Hero Card */}
+      {/* Hero Card - Pink Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="m-4 p-8 grid-border bg-foreground text-background"
+        className="m-4 p-8 grid-border bg-section-pink text-section-pink-foreground"
       >
         <h1 className="text-3xl md:text-4xl lg:text-5xl mb-2">
           شكد تسوه؟
@@ -30,7 +30,7 @@ export function HomeScreen({ onStartScan, recentItems, onViewHistory }: HomeScre
         <Button
           onClick={onStartScan}
           variant="outline"
-          className="bg-background text-foreground hover:bg-background/90 h-12 px-6"
+          className="bg-foreground text-background hover:bg-foreground/90 h-12 px-6 border-foreground"
         >
           <Plus className="w-4 h-4 ms-2" />
           قيّم غرضك الآن
@@ -44,7 +44,8 @@ export function HomeScreen({ onStartScan, recentItems, onViewHistory }: HomeScre
         transition={{ delay: 0.2 }}
         className="flex-1 flex flex-col"
       >
-        <div className="grid-border-t grid-border-b py-3 px-4 flex items-center justify-between">
+        {/* Purple Section Header */}
+        <div className="bg-section-purple text-section-purple-foreground py-3 px-4 flex items-center justify-between">
           <h3 className="text-sm font-semibold">أحدث التقييمات</h3>
           {recentItems.length > 0 && (
             <button 
@@ -97,17 +98,17 @@ export function HomeScreen({ onStartScan, recentItems, onViewHistory }: HomeScre
         </div>
       </motion.div>
 
-      {/* Developer Credit */}
-      <div className="grid-border-t py-4 px-4 text-center">
-        <p className="text-xs text-muted-foreground mb-2">
-          Developed by: <span className="font-medium text-foreground">𝓗𝓪𝓼𝓼𝓪𝓷 𝓼𝓪𝓵𝓶𝓪𝓷</span>
+      {/* Developer Credit - Orange Section */}
+      <div className="bg-section-orange text-section-orange-foreground py-4 px-4 text-center">
+        <p className="text-xs opacity-80 mb-2">
+          Developed by: <span className="font-medium">𝓗𝓪𝓼𝓼𝓪𝓷 𝓼𝓪𝓵𝓶𝓪𝓷</span>
         </p>
         <div className="flex items-center justify-center gap-4">
           <a 
             href="https://linktr.ee/3h0ll" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-muted-foreground/50 hover:text-foreground transition-colors"
+            className="opacity-70 hover:opacity-100 transition-opacity"
             aria-label="Instagram"
           >
             <Instagram className="w-5 h-5" />
@@ -116,7 +117,7 @@ export function HomeScreen({ onStartScan, recentItems, onViewHistory }: HomeScre
             href="https://linktr.ee/3h0ll" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-muted-foreground/50 hover:text-foreground transition-colors"
+            className="opacity-70 hover:opacity-100 transition-opacity"
             aria-label="TikTok"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -127,7 +128,7 @@ export function HomeScreen({ onStartScan, recentItems, onViewHistory }: HomeScre
             href="https://linktr.ee/3h0ll" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-muted-foreground/50 hover:text-foreground transition-colors"
+            className="opacity-70 hover:opacity-100 transition-opacity"
             aria-label="Twitter"
           >
             <Twitter className="w-5 h-5" />

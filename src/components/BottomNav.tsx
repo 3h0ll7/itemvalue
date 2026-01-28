@@ -31,7 +31,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                 className="relative -mt-6 flex flex-col items-center"
               >
                 <div className={`w-14 h-14 flex items-center justify-center grid-border ${
-                  isActive ? 'bg-foreground text-background' : 'bg-background text-foreground'
+                  isActive ? 'bg-section-pink text-section-pink-foreground' : 'bg-background text-foreground'
                 }`}>
                   <Icon className="w-6 h-6" />
                 </div>
