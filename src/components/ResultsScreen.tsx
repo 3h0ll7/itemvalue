@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, ExternalLink, RefreshCw } from "lucide-react";
+import { ArrowRight, ExternalLink, RefreshCw, Trophy, Target, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { AnalysisResult } from "@/hooks/useAppState";
 import { GOVERNORATES, type GovernorateId } from "@/lib/governorates";
@@ -36,23 +36,27 @@ export function ResultsScreen({
       <motion.header
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="bg-section-teal text-section-teal-foreground py-4 px-6 flex items-center justify-between"
+        className="bg-section-teal text-section-teal-foreground py-4 px-6 flex items-center justify-between relative overflow-hidden"
       >
+        {/* Decorative */}
+        <div className="absolute start-1/3 top-1/2 -translate-y-1/2 opacity-10">
+          <Trophy className="w-12 h-12" />
+        </div>
         <button 
           onClick={onBack}
-          className="w-10 h-10 flex items-center justify-center hover:bg-white/10 transition-colors"
+          className="w-10 h-10 flex items-center justify-center hover:bg-white/10 transition-colors relative z-10"
         >
           <ArrowRight className="w-5 h-5" />
         </button>
         
-        <div className="text-center">
+        <div className="text-center relative z-10">
           <h1 className="text-lg">النتيجة</h1>
           <p className="text-xs font-mono opacity-70">
             {govData?.nameAr}
           </p>
         </div>
         
-        <div className="w-10 h-10" />
+        <div className="w-10 h-10 relative z-10" />
       </motion.header>
 
       {/* Content */}
@@ -95,14 +99,18 @@ export function ResultsScreen({
             </div>
 
             {/* Suggested Price - Pink Section */}
-            <div className="grid-border-b p-6 bg-section-pink text-section-pink-foreground">
-              <p className="text-xs font-mono uppercase tracking-widest mb-2 opacity-70">
+            <div className="grid-border-b p-6 bg-section-pink text-section-pink-foreground relative overflow-hidden">
+              {/* Decorative */}
+              <div className="absolute end-4 bottom-4 opacity-20">
+                <Target className="w-16 h-16" />
+              </div>
+              <p className="text-xs font-mono uppercase tracking-widest mb-2 opacity-70 relative z-10">
                 السعر المقترح
               </p>
-              <p className="text-4xl md:text-5xl font-mono">
+              <p className="text-4xl md:text-5xl font-mono relative z-10">
                 {formatPrice(result.suggestedPrice)}
               </p>
-              <p className="text-xs font-mono uppercase tracking-widest mt-1 opacity-70">
+              <p className="text-xs font-mono uppercase tracking-widest mt-1 opacity-70 relative z-10">
                 IQD
               </p>
             </div>
@@ -155,12 +163,16 @@ export function ResultsScreen({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="bg-section-purple text-section-purple-foreground p-6"
+          className="bg-section-purple text-section-purple-foreground p-6 relative overflow-hidden"
         >
-          <p className="text-xs font-mono uppercase tracking-widest mb-3 opacity-70">
+          {/* Decorative */}
+          <div className="absolute end-4 bottom-4 opacity-15">
+            <Lightbulb className="w-12 h-12" />
+          </div>
+          <p className="text-xs font-mono uppercase tracking-widest mb-3 opacity-70 relative z-10">
             استراتيجية البيع
           </p>
-          <p className="text-sm leading-relaxed opacity-90">
+          <p className="text-sm leading-relaxed opacity-90 relative z-10">
             {result.recommendation}
           </p>
         </motion.div>

@@ -1,6 +1,6 @@
 import { useRef, useCallback, useState } from "react";
 import { motion } from "framer-motion";
-import { Upload, MapPin, ChevronDown, Sparkles, Calendar, Package } from "lucide-react";
+import { Upload, MapPin, ChevronDown, Sparkles, Calendar, Package, Camera, Scan, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GOVERNORATES, type GovernorateId } from "@/lib/governorates";
 import type { ItemCondition } from "@/hooks/useAppState";
@@ -75,9 +75,16 @@ export function ScanScreen({
   return (
     <div className="flex-1 flex flex-col overflow-hidden" dir="rtl">
       {/* Header - Teal Section */}
-      <div className="bg-section-teal text-section-teal-foreground py-4 px-4 text-center">
-        <h1 className="text-xl font-semibold">فحص جديد</h1>
-        <p className="text-xs opacity-80 mt-1">
+      <div className="bg-section-teal text-section-teal-foreground py-4 px-4 text-center relative overflow-hidden">
+        {/* Decorative Icons */}
+        <div className="absolute start-4 top-1/2 -translate-y-1/2 opacity-20">
+          <Camera className="w-10 h-10" />
+        </div>
+        <div className="absolute end-4 top-1/2 -translate-y-1/2 opacity-20">
+          <Scan className="w-8 h-8" />
+        </div>
+        <h1 className="text-xl font-semibold relative z-10">فحص جديد</h1>
+        <p className="text-xs opacity-80 mt-1 relative z-10">
           صوّر الغرض واعرف سعره فوراً
         </p>
       </div>
@@ -136,9 +143,15 @@ export function ScanScreen({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="grid-border bg-section-yellow text-section-yellow-foreground p-4"
+          className="grid-border bg-section-yellow text-section-yellow-foreground p-4 relative overflow-hidden"
         >
-          <div className="flex items-center gap-2 mb-3">
+          {/* Decorative */}
+          <div className="absolute end-4 bottom-4 opacity-15">
+            <div className="w-10 h-10 border-2 border-current rounded-full flex items-center justify-center">
+              <div className="w-2 h-2 rounded-full bg-current" />
+            </div>
+          </div>
+          <div className="flex items-center gap-2 mb-3 relative z-10">
             <MapPin className="w-4 h-4 opacity-70" />
             <p className="text-sm font-semibold">موقع البيع (المحافظة)</p>
           </div>
@@ -183,9 +196,13 @@ export function ScanScreen({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          className="grid-border bg-section-purple text-section-purple-foreground p-4"
+          className="grid-border bg-section-purple text-section-purple-foreground p-4 relative overflow-hidden"
         >
-          <div className="flex items-center gap-2 mb-3">
+          {/* Decorative */}
+          <div className="absolute end-4 bottom-4 opacity-15">
+            <div className="w-8 h-8 rotate-45 border-2 border-current" />
+          </div>
+          <div className="flex items-center gap-2 mb-3 relative z-10">
             <Package className="w-4 h-4 opacity-70" />
             <p className="text-sm font-semibold">حالة المنتج</p>
           </div>
@@ -235,9 +252,13 @@ export function ScanScreen({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="grid-border bg-section-orange text-section-orange-foreground p-4"
+          className="grid-border bg-section-orange text-section-orange-foreground p-4 relative overflow-hidden"
         >
-          <div className="flex items-center gap-2 mb-3">
+          {/* Decorative */}
+          <div className="absolute end-4 bottom-4 opacity-15">
+            <Clock className="w-10 h-10" />
+          </div>
+          <div className="flex items-center gap-2 mb-3 relative z-10">
             <Calendar className="w-4 h-4 opacity-70" />
             <p className="text-sm font-semibold">سنة الشراء (اختياري)</p>
           </div>
