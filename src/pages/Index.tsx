@@ -1,4 +1,5 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { BottomNav, type TabId } from "@/components/BottomNav";
 import { HomeScreen } from "@/components/HomeScreen";
 import { ScanScreen } from "@/components/ScanScreen";
@@ -6,8 +7,11 @@ import { HistoryScreen } from "@/components/HistoryScreen";
 import { AnalyzingScreen } from "@/components/AnalyzingScreen";
 import { ResultsScreen } from "@/components/ResultsScreen";
 import { useAppState } from "@/hooks/useAppState";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
+  const navigate = useNavigate();
+  const [authChecked, setAuthChecked] = useState(false);
   const [activeTab, setActiveTab] = useState<TabId>('home');
   const [showGovernorateSelect, setShowGovernorateSelect] = useState(false);
 
@@ -28,6 +32,24 @@ const Index = () => {
     goBack,
   } = useAppState();
 
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) {
+        navigate("/auth");
+      }
+      setAuthChecked(true);
+    });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) {
+        navigate("/auth");
+      }
+      setAuthChecked(true);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
   const handleStartScan = useCallback(() => {
     setActiveTab('scan');
   }, []);
@@ -39,7 +61,6 @@ const Index = () => {
   const handleTabChange = useCallback((tab: TabId) => {
     setActiveTab(tab);
     if (tab !== 'scan') {
-      // Reset scan state when leaving scan tab
       reset();
     }
   }, [reset]);
@@ -48,12 +69,12 @@ const Index = () => {
     startAnalysis();
   }, [startAnalysis]);
 
-  // Show analyzing screen
+  if (!authChecked) return null;
+
   if (screen === 'analyzing') {
     return <AnalyzingScreen />;
   }
 
-  // Show results screen
   if (screen === 'results' && analysisResult && governorate) {
     return (
       <ResultsScreen
@@ -72,10 +93,8 @@ const Index = () => {
     );
   }
 
-  // Main app with bottom navigation
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Main Content */}
       {activeTab === 'home' && (
         <HomeScreen
           onStartScan={handleStartScan}
@@ -104,7 +123,6 @@ const Index = () => {
         <HistoryScreen items={analysisHistory} />
       )}
 
-      {/* Bottom Navigation */}
       <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
     </div>
   );
