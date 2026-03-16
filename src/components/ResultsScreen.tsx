@@ -10,6 +10,8 @@ interface ResultsScreenProps {
   result: AnalysisResult;
   governorate: GovernorateId;
   imagePreview: string | null;
+  isPro: boolean;
+  onUpgradeClick: () => void;
   onReset: () => void;
   onBack: () => void;
 }
