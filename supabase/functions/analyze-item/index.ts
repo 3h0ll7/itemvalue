@@ -39,6 +39,50 @@ serve(async (req) => {
     const userId = claimsData.claims.sub;
     console.log('Authenticated user:', userId);
 
+    // --- Paywall: check subscription and usage ---
+    const supabaseAdmin = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    );
+
+    // Ensure user has usage/subscription rows
+    await supabaseAdmin.rpc('ensure_user_setup', { p_user_id: userId });
+
+    // Check subscription
+    const { data: subscription } = await supabaseAdmin
+      .from('subscriptions')
+      .select('plan, status, expires_at')
+      .eq('user_id', userId)
+      .single();
+
+    const isPro = subscription?.plan === 'pro' &&
+      subscription?.status === 'active' &&
+      (subscription?.expires_at === null || new Date(subscription.expires_at) > new Date());
+
+    if (!isPro) {
+      const { data: usage } = await supabaseAdmin
+        .from('user_usage')
+        .select('evaluations_used, evaluations_limit')
+        .eq('user_id', userId)
+        .single();
+
+      const used = usage?.evaluations_used ?? 0;
+      const limit = usage?.evaluations_limit ?? 5;
+
+      if (used >= limit) {
+        return new Response(
+          JSON.stringify({
+            error: 'limit_exceeded',
+            message: 'انتهت تقييماتك المجانية. اشترك في باقة PRO للاستمرار.',
+            evaluations_used: used,
+            evaluations_limit: limit
+          }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    }
+    // --- End paywall check ---
+
     const { imageBase64, governorate, itemCondition, purchaseYear } = await req.json();
 
     if (!imageBase64) {
