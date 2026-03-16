@@ -2,6 +2,8 @@ import { useRef, useCallback, useState } from "react";
 import { motion } from "framer-motion";
 import { Upload, MapPin, ChevronDown, Sparkles, Calendar, Package, Camera, Scan, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { UsageCounter } from "@/components/subscription/UsageCounter";
+import { Button } from "@/components/ui/button";
 import { GOVERNORATES, type GovernorateId } from "@/lib/governorates";
 import type { ItemCondition } from "@/hooks/useAppState";
 
