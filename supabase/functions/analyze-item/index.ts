@@ -241,6 +241,22 @@ ONLY if the image shows perishable food, live animals, or illegal items, respond
 
     console.log('Analysis complete:', parsedResult);
 
+    // Increment social proof counter (fire-and-forget, use service role)
+    try {
+      const serviceClient = createClient(
+        Deno.env.get('SUPABASE_URL')!,
+        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+      );
+      const today = new Date().toISOString().split('T')[0];
+      await serviceClient.rpc('increment_eval_count', {
+        p_date: today,
+        p_item_type: parsedResult.itemType || 'unknown',
+        p_governorate: governorate || 'unknown',
+      });
+    } catch (statsErr) {
+      console.error('Failed to update stats (non-blocking):', statsErr);
+    }
+
     return new Response(
       JSON.stringify(parsedResult),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
