@@ -285,18 +285,18 @@ ONLY if the image shows perishable food, live animals, or illegal items, respond
 
     console.log('Analysis complete:', parsedResult);
 
-    // Increment social proof counter (fire-and-forget, use service role)
+    // Increment social proof counter + user usage (fire-and-forget)
     try {
-      const serviceClient = createClient(
-        Deno.env.get('SUPABASE_URL')!,
-        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-      );
       const today = new Date().toISOString().split('T')[0];
-      await serviceClient.rpc('increment_eval_count', {
-        p_date: today,
-        p_item_type: parsedResult.itemType || 'unknown',
-        p_governorate: governorate || 'unknown',
-      });
+      await Promise.all([
+        supabaseAdmin.rpc('increment_eval_count', {
+          p_date: today,
+          p_item_type: parsedResult.itemType || 'unknown',
+          p_governorate: governorate || 'unknown',
+        }),
+        // Increment user usage for free users
+        !isPro ? supabaseAdmin.rpc('increment_user_eval', { p_user_id: userId }) : Promise.resolve(),
+      ]);
     } catch (statsErr) {
       console.error('Failed to update stats (non-blocking):', statsErr);
     }
