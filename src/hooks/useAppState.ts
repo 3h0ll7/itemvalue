@@ -35,6 +35,8 @@ export interface AnalysisResult {
   confidenceScore?: number;
 }
 
+export type UpgradeReason = "limit_reached" | "feature_locked" | "manual";
+
 export function useAppState() {
   const [screen, setScreen] = useState<AppScreen>("idle");
   const [governorate, setGovernorate] = useState<GovernorateId | null>(null);
@@ -44,6 +46,8 @@ export function useAppState() {
   const [analysisHistory, setAnalysisHistory] = useState<AnalysisResult[]>([]);
   const [itemCondition, setItemCondition] = useState<ItemCondition | null>(null);
   const [purchaseYear, setPurchaseYear] = useState<number | null>(null);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [upgradeReason, setUpgradeReason] = useState<UpgradeReason>("manual");
 
   const selectGovernorate = useCallback((gov: GovernorateId) => {
     setGovernorate(gov);
@@ -51,7 +55,6 @@ export function useAppState() {
 
   const uploadImage = useCallback((file: File) => {
     setImageFile(file);
-    // Compress image to avoid payload size issues with the edge function
     const img = new Image();
     const objectUrl = URL.createObjectURL(file);
     img.onload = () => {
@@ -67,12 +70,12 @@ export function useAppState() {
           height = maxDim;
         }
       }
-      const canvas = document.createElement('canvas');
+      const canvas = document.createElement("canvas");
       canvas.width = width;
       canvas.height = height;
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext("2d");
       ctx?.drawImage(img, 0, 0, width, height);
-      const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+      const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
       setImagePreview(compressedBase64);
     };
     img.src = objectUrl;
@@ -98,16 +101,23 @@ export function useAppState() {
     }
 
     setScreen("analyzing");
-    
+
     try {
       const result = await analyzeItem(imagePreview, governorate, itemCondition, purchaseYear);
-      
+
       if (result.success === true) {
         setAnalysisResult(result.data);
-        setAnalysisHistory(prev => [result.data, ...prev]);
+        setAnalysisHistory((prev) => [result.data, ...prev]);
         setScreen("results");
       } else {
         const errorData = result.error;
+        // Handle paywall limit
+        if (errorData.error === "limit_exceeded") {
+          setUpgradeReason("limit_reached");
+          setShowUpgradeModal(true);
+          setScreen("idle");
+          return;
+        }
         const errorMessage = errorData.message || errorData.error;
         toast.error(errorMessage);
         setScreen("idle");
@@ -147,6 +157,10 @@ export function useAppState() {
     analysisHistory,
     itemCondition,
     purchaseYear,
+    showUpgradeModal,
+    upgradeReason,
+    setShowUpgradeModal,
+    setUpgradeReason,
     selectGovernorate,
     uploadImage,
     selectItemCondition,
