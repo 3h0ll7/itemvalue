@@ -1,5 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
-import type { AnalysisResult, ItemCondition } from "@/hooks/useAppState";
+import type { AiProvider, AnalysisResult, ItemCondition } from "@/hooks/useAppState";
 import type { GovernorateId } from "@/lib/governorates";
 import { GOVERNORATES } from "@/lib/governorates";
 
@@ -18,7 +18,8 @@ export async function analyzeItem(
   imageBase64: string,
   governorateId: GovernorateId,
   itemCondition: ItemCondition,
-  purchaseYear: number | null
+  purchaseYear: number | null,
+  aiProvider: AiProvider
 ): Promise<{ success: true; data: AnalysisResult } | { success: false; error: AnalyzeItemError }> {
   const govData = GOVERNORATES.find((g) => g.id === governorateId);
   const governorateName = govData?.name || governorateId;
@@ -30,7 +31,8 @@ export async function analyzeItem(
         imageBase64,
         governorate: governorateName,
         itemCondition: conditionLabel,
-        purchaseYear
+        purchaseYear,
+        aiProvider,
       },
     });
 

@@ -5,6 +5,7 @@ import { analyzeItem } from "@/lib/api/analyzeItem";
 
 export type AppScreen = "idle" | "analyzing" | "results";
 export type ItemCondition = "new" | "clean_used" | "worn";
+export type AiProvider = "gemini" | "deepseek";
 
 export interface PriceDistribution {
   range: string;
@@ -46,6 +47,7 @@ export function useAppState() {
   const [analysisHistory, setAnalysisHistory] = useState<AnalysisResult[]>([]);
   const [itemCondition, setItemCondition] = useState<ItemCondition | null>(null);
   const [purchaseYear, setPurchaseYear] = useState<number | null>(null);
+  const [aiProvider, setAiProvider] = useState<AiProvider>("deepseek");
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [upgradeReason, setUpgradeReason] = useState<UpgradeReason>("manual");
 
@@ -89,6 +91,10 @@ export function useAppState() {
     setPurchaseYear(year);
   }, []);
 
+  const selectAiProvider = useCallback((provider: AiProvider) => {
+    setAiProvider(provider);
+  }, []);
+
   const startAnalysis = useCallback(async () => {
     if (!imagePreview || !governorate) {
       toast.error("الرجاء اختيار صورة ومحافظة أولاً");
@@ -103,7 +109,7 @@ export function useAppState() {
     setScreen("analyzing");
 
     try {
-      const result = await analyzeItem(imagePreview, governorate, itemCondition, purchaseYear);
+      const result = await analyzeItem(imagePreview, governorate, itemCondition, purchaseYear, aiProvider);
 
       if (result.success === true) {
         setAnalysisResult(result.data);
@@ -127,7 +133,7 @@ export function useAppState() {
       toast.error("حدث خطأ أثناء التحليل. الرجاء المحاولة مرة أخرى.");
       setScreen("idle");
     }
-  }, [imagePreview, governorate, itemCondition, purchaseYear]);
+  }, [imagePreview, governorate, itemCondition, purchaseYear, aiProvider]);
 
   const reset = useCallback(() => {
     setScreen("idle");
@@ -137,6 +143,7 @@ export function useAppState() {
     setGovernorate(null);
     setItemCondition(null);
     setPurchaseYear(null);
+    setAiProvider("deepseek");
   }, []);
 
   const goBack = useCallback(() => {
@@ -157,6 +164,7 @@ export function useAppState() {
     analysisHistory,
     itemCondition,
     purchaseYear,
+    aiProvider,
     showUpgradeModal,
     upgradeReason,
     setShowUpgradeModal,
@@ -165,6 +173,7 @@ export function useAppState() {
     uploadImage,
     selectItemCondition,
     selectPurchaseYear,
+    selectAiProvider,
     startAnalysis,
     reset,
     goBack,

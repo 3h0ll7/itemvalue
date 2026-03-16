@@ -27,6 +27,7 @@ const Index = () => {
     analysisHistory,
     itemCondition,
     purchaseYear,
+    aiProvider,
     showUpgradeModal,
     upgradeReason,
     setShowUpgradeModal,
@@ -35,6 +36,7 @@ const Index = () => {
     uploadImage,
     selectItemCondition,
     selectPurchaseYear,
+    selectAiProvider,
     startAnalysis,
     reset,
     goBack,
@@ -144,10 +146,12 @@ const Index = () => {
           imagePreview={imagePreview}
           itemCondition={itemCondition}
           purchaseYear={purchaseYear}
+          aiProvider={aiProvider}
           onSelectGovernorate={selectGovernorate}
           onUploadImage={uploadImage}
           onSelectCondition={selectItemCondition}
           onSelectPurchaseYear={selectPurchaseYear}
+          onSelectAiProvider={selectAiProvider}
           onStartAnalysis={handleStartAnalysis}
           showGovernorateSelect={showGovernorateSelect}
           onToggleGovernorateSelect={() => setShowGovernorateSelect(!showGovernorateSelect)}

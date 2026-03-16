@@ -6,6 +6,26 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
+type AiProvider = 'gemini' | 'deepseek';
+
+const AI_PROVIDER_MODELS: Record<AiProvider, string> = {
+  gemini: Deno.env.get('GEMINI_MODEL') ?? 'google/gemini-2.5-flash',
+  deepseek: Deno.env.get('DEEPSEEK_MODEL') ?? 'deepseek/deepseek-chat-v3-0324',
+};
+
+function resolveProvider(provider?: unknown): AiProvider {
+  if (provider === 'gemini' || provider === 'deepseek') {
+    return provider;
+  }
+
+  const defaultProvider = Deno.env.get('AI_PROVIDER') as AiProvider | undefined;
+  if (defaultProvider === 'gemini' || defaultProvider === 'deepseek') {
+    return defaultProvider;
+  }
+
+  return 'deepseek';
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -83,7 +103,7 @@ serve(async (req) => {
     }
     // --- End paywall check ---
 
-    const { imageBase64, governorate, itemCondition, purchaseYear } = await req.json();
+    const { imageBase64, governorate, itemCondition, purchaseYear, aiProvider } = await req.json();
 
     if (!imageBase64) {
       return new Response(
@@ -97,7 +117,10 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY is not configured');
     }
 
-    console.log('Analyzing item for governorate:', governorate, 'condition:', itemCondition, 'year:', purchaseYear);
+    const selectedProvider = resolveProvider(aiProvider);
+    const selectedModel = AI_PROVIDER_MODELS[selectedProvider];
+
+    console.log('Analyzing item for governorate:', governorate, 'condition:', itemCondition, 'year:', purchaseYear, 'provider:', selectedProvider, 'model:', selectedModel);
 
     const currentYear = new Date().getFullYear();
     const itemAge = purchaseYear ? currentYear - purchaseYear : null;
@@ -194,7 +217,7 @@ ONLY if the image shows perishable food, live animals, or illegal items, respond
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: selectedModel,
         messages: [
           { role: 'system', content: systemPrompt },
           {

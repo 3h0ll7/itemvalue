@@ -4,17 +4,19 @@ import { Upload, MapPin, ChevronDown, Sparkles, Calendar, Package, Camera, Scan,
 import { Button } from "@/components/ui/button";
 import { UsageCounter } from "@/components/subscription/UsageCounter";
 import { GOVERNORATES, type GovernorateId } from "@/lib/governorates";
-import type { ItemCondition } from "@/hooks/useAppState";
+import type { AiProvider, ItemCondition } from "@/hooks/useAppState";
 
 interface ScanScreenProps {
   governorate: GovernorateId | null;
   imagePreview: string | null;
   itemCondition: ItemCondition | null;
   purchaseYear: number | null;
+  aiProvider: AiProvider;
   onSelectGovernorate: (gov: GovernorateId) => void;
   onUploadImage: (file: File) => void;
   onSelectCondition: (condition: ItemCondition) => void;
   onSelectPurchaseYear: (year: number) => void;
+  onSelectAiProvider: (provider: AiProvider) => void;
   onStartAnalysis: () => void;
   showGovernorateSelect: boolean;
   onToggleGovernorateSelect: () => void;
@@ -34,15 +36,22 @@ const CONDITION_OPTIONS: { id: ItemCondition; label: string; description: string
 const currentYear = new Date().getFullYear();
 const YEAR_OPTIONS = Array.from({ length: 15 }, (_, i) => currentYear - i);
 
+const AI_PROVIDER_OPTIONS: { id: AiProvider; label: string; description: string }[] = [
+  { id: "deepseek", label: "DeepSeek (الأحدث)", description: "أفضل توازن بين الجودة والتكلفة" },
+  { id: "gemini", label: "Google Gemini", description: "بديل سريع للتحاليل العامة" },
+];
+
 export function ScanScreen({
   governorate,
   imagePreview,
   itemCondition,
   purchaseYear,
+  aiProvider,
   onSelectGovernorate,
   onUploadImage,
   onSelectCondition,
   onSelectPurchaseYear,
+  onSelectAiProvider,
   onStartAnalysis,
   showGovernorateSelect,
   onToggleGovernorateSelect,
@@ -54,6 +63,7 @@ export function ScanScreen({
 }: ScanScreenProps) {
   const [showConditionSelect, setShowConditionSelect] = useState(false);
   const [showYearSelect, setShowYearSelect] = useState(false);
+  const [showProviderSelect, setShowProviderSelect] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const govData = governorate ? GOVERNORATES.find((g) => g.id === governorate) : null;
@@ -154,6 +164,56 @@ export function ScanScreen({
             >
               تغيير الصورة
             </button>
+          )}
+        </motion.div>
+
+        {/* AI Provider Section - Blue */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.18 }}
+          className="grid-border bg-sky-100 text-sky-900 p-4 relative overflow-hidden"
+        >
+          <div className="flex items-center gap-2 mb-3 relative z-10">
+            <Sparkles className="w-4 h-4 opacity-70" />
+            <p className="text-sm font-semibold">مزود الذكاء الاصطناعي</p>
+          </div>
+
+          <button
+            onClick={() => setShowProviderSelect(!showProviderSelect)}
+            className="w-full border border-sky-900/30 p-3 flex items-center justify-between hover:bg-sky-900/10 transition-colors bg-background text-foreground"
+          >
+            <ChevronDown className={`w-4 h-4 transition-transform ${showProviderSelect ? 'rotate-180' : ''}`} />
+            <span className="font-mono">
+              {AI_PROVIDER_OPTIONS.find((provider) => provider.id === aiProvider)?.label || "اختر المزود"}
+            </span>
+          </button>
+
+          {showProviderSelect && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="mt-2 grid-border bg-background z-10"
+            >
+              {AI_PROVIDER_OPTIONS.map((provider) => (
+                <button
+                  key={provider.id}
+                  onClick={() => {
+                    onSelectAiProvider(provider.id);
+                    setShowProviderSelect(false);
+                  }}
+                  className={`w-full p-3 text-end hover:bg-muted/30 transition-colors grid-border-b last:border-b-0 ${
+                    aiProvider === provider.id ? 'bg-foreground text-background' : ''
+                  }`}
+                >
+                  <span className="font-mono block">{provider.label}</span>
+                  <span className={`text-xs ${aiProvider === provider.id ? 'text-background/70' : 'text-muted-foreground'}`}>
+                    {provider.description}
+                  </span>
+                </button>
+              ))}
+            </motion.div>
           )}
         </motion.div>
 
