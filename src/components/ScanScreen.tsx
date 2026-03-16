@@ -45,6 +45,11 @@ export function ScanScreen({
   onStartAnalysis,
   showGovernorateSelect,
   onToggleGovernorateSelect,
+  isPro,
+  evaluationsUsed,
+  evaluationsLimit,
+  evaluationsRemaining,
+  onUpgradeClick,
 }: ScanScreenProps) {
   const [showConditionSelect, setShowConditionSelect] = useState(false);
   const [showYearSelect, setShowYearSelect] = useState(false);

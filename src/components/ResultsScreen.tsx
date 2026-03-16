@@ -27,6 +27,8 @@ export function ResultsScreen({
   result,
   governorate,
   imagePreview,
+  isPro,
+  onUpgradeClick,
   onReset,
   onBack,
 }: ResultsScreenProps) {

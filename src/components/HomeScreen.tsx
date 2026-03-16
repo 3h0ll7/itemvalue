@@ -14,7 +14,7 @@ interface HomeScreenProps {
   onUpgradeClick: () => void;
 }
 
-export function HomeScreen({ onStartScan, recentItems, onViewHistory }: HomeScreenProps) {
+export function HomeScreen({ onStartScan, recentItems, onViewHistory, isPro, evaluationsUsed, evaluationsRemaining, onUpgradeClick }: HomeScreenProps) {
   return (
     <div className="flex-1 flex flex-col overflow-hidden" dir="rtl">
       {/* Social Proof Ticker */}
