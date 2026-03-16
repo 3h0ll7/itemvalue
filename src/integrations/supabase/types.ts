@@ -14,13 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      app_stats: {
+        Row: {
+          evaluations_count: number
+          id: string
+          last_governorate: string | null
+          last_item_type: string | null
+          stat_date: string
+          updated_at: string
+        }
+        Insert: {
+          evaluations_count?: number
+          id?: string
+          last_governorate?: string | null
+          last_item_type?: string | null
+          stat_date?: string
+          updated_at?: string
+        }
+        Update: {
+          evaluations_count?: number
+          id?: string
+          last_governorate?: string | null
+          last_item_type?: string | null
+          stat_date?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_eval_count: {
+        Args: { p_date: string; p_governorate: string; p_item_type: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

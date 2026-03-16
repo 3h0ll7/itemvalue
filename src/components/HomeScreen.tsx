@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Plus, ArrowLeft, Instagram, Twitter, Sparkles, TrendingUp, Zap, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { StatsTickerBar } from "@/components/StatsTickerBar";
 import type { AnalysisResult } from "@/hooks/useAppState";
 
 interface HomeScreenProps {
@@ -12,6 +13,9 @@ interface HomeScreenProps {
 export function HomeScreen({ onStartScan, recentItems, onViewHistory }: HomeScreenProps) {
   return (
     <div className="flex-1 flex flex-col overflow-hidden" dir="rtl">
+      {/* Social Proof Ticker */}
+      <StatsTickerBar />
+
       {/* Hero Card - Pink Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
