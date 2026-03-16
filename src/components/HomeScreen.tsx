@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Plus, ArrowLeft, Instagram, Twitter, Sparkles, TrendingUp, Zap, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { StatsTickerBar } from "@/components/StatsTickerBar";
 import type { AnalysisResult } from "@/hooks/useAppState";
 
 interface HomeScreenProps {
