@@ -41,15 +41,98 @@ export type Database = {
         }
         Relationships: []
       }
+      subscriptions: {
+        Row: {
+          activated_by: string
+          amount_iqd: number | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          notes: string | null
+          payment_method: string | null
+          payment_reference: string | null
+          plan: string
+          started_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          activated_by?: string
+          amount_iqd?: number | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          notes?: string | null
+          payment_method?: string | null
+          payment_reference?: string | null
+          plan?: string
+          started_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          activated_by?: string
+          amount_iqd?: number | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          notes?: string | null
+          payment_method?: string | null
+          payment_reference?: string | null
+          plan?: string
+          started_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_usage: {
+        Row: {
+          created_at: string
+          evaluations_limit: number
+          evaluations_used: number
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          evaluations_limit?: number
+          evaluations_used?: number
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          evaluations_limit?: number
+          evaluations_used?: number
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      activate_pro_subscription: {
+        Args: {
+          months?: number
+          payment_amt?: number
+          payment_ref?: string
+          target_user_id: string
+        }
+        Returns: undefined
+      }
+      ensure_user_setup: { Args: { p_user_id: string }; Returns: undefined }
       increment_eval_count: {
         Args: { p_date: string; p_governorate: string; p_item_type: string }
         Returns: undefined
       }
+      increment_user_eval: { Args: { p_user_id: string }; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
