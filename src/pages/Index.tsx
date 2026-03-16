@@ -6,14 +6,18 @@ import { ScanScreen } from "@/components/ScanScreen";
 import { HistoryScreen } from "@/components/HistoryScreen";
 import { AnalyzingScreen } from "@/components/AnalyzingScreen";
 import { ResultsScreen } from "@/components/ResultsScreen";
+import { UpgradeModal } from "@/components/subscription/UpgradeModal";
 import { useAppState } from "@/hooks/useAppState";
+import { useSubscription } from "@/hooks/useSubscription";
 import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const navigate = useNavigate();
   const [authChecked, setAuthChecked] = useState(false);
-  const [activeTab, setActiveTab] = useState<TabId>('home');
+  const [activeTab, setActiveTab] = useState<TabId>("home");
   const [showGovernorateSelect, setShowGovernorateSelect] = useState(false);
+
+  const sub = useSubscription();
 
   const {
     screen,
@@ -23,6 +27,10 @@ const Index = () => {
     analysisHistory,
     itemCondition,
     purchaseYear,
+    showUpgradeModal,
+    upgradeReason,
+    setShowUpgradeModal,
+    setUpgradeReason,
     selectGovernorate,
     uploadImage,
     selectItemCondition,
@@ -33,7 +41,9 @@ const Index = () => {
   } = useAppState();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session) {
         navigate("/auth");
       }
@@ -51,59 +61,84 @@ const Index = () => {
   }, [navigate]);
 
   const handleStartScan = useCallback(() => {
-    setActiveTab('scan');
+    setActiveTab("scan");
   }, []);
 
   const handleViewHistory = useCallback(() => {
-    setActiveTab('history');
+    setActiveTab("history");
   }, []);
 
-  const handleTabChange = useCallback((tab: TabId) => {
-    setActiveTab(tab);
-    if (tab !== 'scan') {
-      reset();
-    }
-  }, [reset]);
+  const handleTabChange = useCallback(
+    (tab: TabId) => {
+      setActiveTab(tab);
+      if (tab !== "scan") {
+        reset();
+      }
+    },
+    [reset]
+  );
 
   const handleStartAnalysis = useCallback(() => {
-    startAnalysis();
-  }, [startAnalysis]);
+    startAnalysis().then(() => {
+      // Refetch subscription data after analysis
+      sub.refetch();
+    });
+  }, [startAnalysis, sub]);
+
+  const handleUpgradeClick = useCallback(() => {
+    setUpgradeReason("manual");
+    setShowUpgradeModal(true);
+  }, [setUpgradeReason, setShowUpgradeModal]);
 
   if (!authChecked) return null;
 
-  if (screen === 'analyzing') {
+  if (screen === "analyzing") {
     return <AnalyzingScreen />;
   }
 
-  if (screen === 'results' && analysisResult && governorate) {
+  if (screen === "results" && analysisResult && governorate) {
     return (
-      <ResultsScreen
-        result={analysisResult}
-        governorate={governorate}
-        imagePreview={imagePreview}
-        onReset={() => {
-          reset();
-          setActiveTab('home');
-        }}
-        onBack={() => {
-          goBack();
-          setActiveTab('scan');
-        }}
-      />
+      <>
+        <ResultsScreen
+          result={analysisResult}
+          governorate={governorate}
+          imagePreview={imagePreview}
+          isPro={sub.isPro}
+          onUpgradeClick={handleUpgradeClick}
+          onReset={() => {
+            reset();
+            setActiveTab("home");
+          }}
+          onBack={() => {
+            goBack();
+            setActiveTab("scan");
+          }}
+        />
+        <UpgradeModal
+          isOpen={showUpgradeModal}
+          onClose={() => setShowUpgradeModal(false)}
+          triggerReason={upgradeReason}
+          evaluationsUsed={sub.evaluationsUsed}
+        />
+      </>
     );
   }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {activeTab === 'home' && (
+      {activeTab === "home" && (
         <HomeScreen
           onStartScan={handleStartScan}
           recentItems={analysisHistory}
           onViewHistory={handleViewHistory}
+          isPro={sub.isPro}
+          evaluationsUsed={sub.evaluationsUsed}
+          evaluationsRemaining={sub.evaluationsRemaining}
+          onUpgradeClick={handleUpgradeClick}
         />
       )}
 
-      {activeTab === 'scan' && (
+      {activeTab === "scan" && (
         <ScanScreen
           governorate={governorate}
           imagePreview={imagePreview}
@@ -116,14 +151,24 @@ const Index = () => {
           onStartAnalysis={handleStartAnalysis}
           showGovernorateSelect={showGovernorateSelect}
           onToggleGovernorateSelect={() => setShowGovernorateSelect(!showGovernorateSelect)}
+          isPro={sub.isPro}
+          evaluationsUsed={sub.evaluationsUsed}
+          evaluationsLimit={sub.evaluationsLimit}
+          evaluationsRemaining={sub.evaluationsRemaining}
+          onUpgradeClick={handleUpgradeClick}
         />
       )}
 
-      {activeTab === 'history' && (
-        <HistoryScreen items={analysisHistory} />
-      )}
+      {activeTab === "history" && <HistoryScreen items={analysisHistory} />}
 
       <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
+
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        triggerReason={upgradeReason}
+        evaluationsUsed={sub.evaluationsUsed}
+      />
     </div>
   );
 };

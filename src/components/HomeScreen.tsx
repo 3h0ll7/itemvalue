@@ -8,9 +8,13 @@ interface HomeScreenProps {
   onStartScan: () => void;
   recentItems: AnalysisResult[];
   onViewHistory: () => void;
+  isPro: boolean;
+  evaluationsUsed: number;
+  evaluationsRemaining: number;
+  onUpgradeClick: () => void;
 }
 
-export function HomeScreen({ onStartScan, recentItems, onViewHistory }: HomeScreenProps) {
+export function HomeScreen({ onStartScan, recentItems, onViewHistory, isPro, evaluationsUsed, evaluationsRemaining, onUpgradeClick }: HomeScreenProps) {
   return (
     <div className="flex-1 flex flex-col overflow-hidden" dir="rtl">
       {/* Social Proof Ticker */}
@@ -50,6 +54,21 @@ export function HomeScreen({ onStartScan, recentItems, onViewHistory }: HomeScre
           قيّم غرضك الآن
         </Button>
       </motion.div>
+
+      {/* Upgrade banner for free users with 3+ evaluations */}
+      {!isPro && evaluationsUsed >= 3 && (
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          onClick={onUpgradeClick}
+          className="mx-4 mb-2 p-3 bg-section-yellow text-section-yellow-foreground grid-border flex items-center justify-between text-sm"
+        >
+          <span>
+            باقيلك {evaluationsRemaining} تقييم مجاني — اشترك بـ 15,000 د.ع وقيّم بلا حدود
+          </span>
+          <span className="text-lg">👑</span>
+        </motion.button>
+      )}
 
       {/* Recent Evaluations Section */}
       <motion.div

@@ -10,6 +10,8 @@ interface ResultsScreenProps {
   result: AnalysisResult;
   governorate: GovernorateId;
   imagePreview: string | null;
+  isPro: boolean;
+  onUpgradeClick: () => void;
   onReset: () => void;
   onBack: () => void;
 }
@@ -25,6 +27,8 @@ export function ResultsScreen({
   result,
   governorate,
   imagePreview,
+  isPro,
+  onUpgradeClick,
   onReset,
   onBack,
 }: ResultsScreenProps) {

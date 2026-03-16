@@ -2,6 +2,7 @@ import { useRef, useCallback, useState } from "react";
 import { motion } from "framer-motion";
 import { Upload, MapPin, ChevronDown, Sparkles, Calendar, Package, Camera, Scan, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { UsageCounter } from "@/components/subscription/UsageCounter";
 import { GOVERNORATES, type GovernorateId } from "@/lib/governorates";
 import type { ItemCondition } from "@/hooks/useAppState";
 
@@ -17,6 +18,11 @@ interface ScanScreenProps {
   onStartAnalysis: () => void;
   showGovernorateSelect: boolean;
   onToggleGovernorateSelect: () => void;
+  isPro: boolean;
+  evaluationsUsed: number;
+  evaluationsLimit: number;
+  evaluationsRemaining: number;
+  onUpgradeClick: () => void;
 }
 
 const CONDITION_OPTIONS: { id: ItemCondition; label: string; description: string }[] = [
@@ -40,6 +46,11 @@ export function ScanScreen({
   onStartAnalysis,
   showGovernorateSelect,
   onToggleGovernorateSelect,
+  isPro,
+  evaluationsUsed,
+  evaluationsLimit,
+  evaluationsRemaining,
+  onUpgradeClick,
 }: ScanScreenProps) {
   const [showConditionSelect, setShowConditionSelect] = useState(false);
   const [showYearSelect, setShowYearSelect] = useState(false);
@@ -88,6 +99,14 @@ export function ScanScreen({
           صوّر الغرض واعرف سعره فوراً
         </p>
       </div>
+      {/* Usage Counter */}
+      <UsageCounter
+        isPro={isPro}
+        evaluationsUsed={evaluationsUsed}
+        evaluationsLimit={evaluationsLimit}
+        evaluationsRemaining={evaluationsRemaining}
+        onUpgradeClick={onUpgradeClick}
+      />
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">

@@ -200,4 +200,9 @@
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
   }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
 }
