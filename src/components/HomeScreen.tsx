@@ -8,6 +8,10 @@ interface HomeScreenProps {
   onStartScan: () => void;
   recentItems: AnalysisResult[];
   onViewHistory: () => void;
+  isPro: boolean;
+  evaluationsUsed: number;
+  evaluationsRemaining: number;
+  onUpgradeClick: () => void;
 }
 
 export function HomeScreen({ onStartScan, recentItems, onViewHistory }: HomeScreenProps) {
