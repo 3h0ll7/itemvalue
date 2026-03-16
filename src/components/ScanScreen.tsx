@@ -17,6 +17,11 @@ interface ScanScreenProps {
   onStartAnalysis: () => void;
   showGovernorateSelect: boolean;
   onToggleGovernorateSelect: () => void;
+  isPro: boolean;
+  evaluationsUsed: number;
+  evaluationsLimit: number;
+  evaluationsRemaining: number;
+  onUpgradeClick: () => void;
 }
 
 const CONDITION_OPTIONS: { id: ItemCondition; label: string; description: string }[] = [
